@@ -170,6 +170,56 @@ def parse_ipxact_header(xml_file: str) -> Dict[str, str]:
     except Exception as e:
         raise ValueError(f"Failed to parse IP-XACT header: {str(e)}")
 
+def safe_get_text(element, xpath: str, ns: dict, default: str = 'N/A') -> str:
+    """Safely get text from an XML element with 'N/A' as default."""
+    try:
+        elem = element.find(xpath, ns)
+        if elem is not None and elem.text is not None:
+            return elem.text.strip()
+        return default
+    except AttributeError:
+        return default
+
+def parse_field_info(field, ns: dict) -> dict:
+    """Parse field information without redundancy."""
+    # Get basic field attributes
+    field_info = {
+        'name': safe_get_text(field, 'ipxact:name', ns, ''),
+        'description': safe_get_text(field, 'ipxact:description', ns, ''),
+        'bit_offset': safe_get_text(field, 'ipxact:bitOffset', ns, '0'),
+        'bit_width': safe_get_text(field, 'ipxact:bitWidth', ns, '1'),
+        'access': safe_get_text(field, 'ipxact:access', ns, 'read-write'),
+        'elements': []
+    }
+
+    # Add only non-redundant elements
+    for child in field:
+        tag = child.tag.split('}')[-1]  # Remove namespace
+        if tag not in ['name', 'description', 'bitOffset', 'bitWidth', 'access']:
+            if tag == 'reset':
+                field_info['elements'].append({
+                    'type': 'reset',
+                    'value': safe_get_text(child, 'ipxact:value', ns, '0x0')
+                })
+            elif tag == 'writeValueConstraint':
+                field_info['elements'].append({
+                    'type': 'writeValueConstraint',
+                    'minimum': safe_get_text(child, 'ipxact:minimum', ns, '0'),
+                    'maximum': safe_get_text(child, 'ipxact:maximum', ns, '0')
+                })
+            elif tag == 'modifiedWriteValue':
+                field_info['elements'].append({
+                    'type': 'modifiedWriteValue',
+                    'value': child.text
+                })
+            elif tag == 'readAction':
+                field_info['elements'].append({
+                    'type': 'readAction',
+                    'value': child.text
+                })
+
+    return field_info
+
 def parse_register_info(xml_file: str) -> list:
     """Parse register information from IP-XACT XML file."""
     try:
@@ -178,16 +228,6 @@ def parse_register_info(xml_file: str) -> list:
         
         ns = {'ipxact': root.tag.split('}')[0].strip('{')}
         registers_info = []
-
-        def safe_get_text(element, xpath: str, default: str = '') -> str:
-            """Safely get text from an XML element."""
-            try:
-                elem = element.find(xpath, ns)
-                if elem is not None and elem.text is not None:
-                    return elem.text.strip()
-                return default
-            except AttributeError:
-                return default
 
         # Debug namespace and structure
         print(f"\nDebug: Using namespace - {ns['ipxact']}")
@@ -199,97 +239,52 @@ def parse_register_info(xml_file: str) -> list:
             return []
             
         for memory_map in memory_maps.findall('ipxact:memoryMap', ns):
-            memory_map_name = safe_get_text(memory_map, 'ipxact:name', 'unnamed_map')
-            memory_map_description = safe_get_text(memory_map, 'ipxact:description', '')
+            memory_map_name = safe_get_text(memory_map, 'ipxact:name', ns, 'unnamed_map')
+            memory_map_description = safe_get_text(memory_map, 'ipxact:description', ns, 'N/A')
             
             # Find address blocks directly under memory map
             for block in memory_map.findall('ipxact:addressBlock', ns):
-                block_name = safe_get_text(block, 'ipxact:name', 'unnamed_block')
-                block_base = safe_get_text(block, 'ipxact:baseAddress', '0x0')
-                block_range = safe_get_text(block, 'ipxact:range', '0x0')
-                block_width = safe_get_text(block, 'ipxact:width', '32')
-                block_usage = safe_get_text(block, 'ipxact:usage', 'register')
+                block_name = safe_get_text(block, 'ipxact:name', ns, 'unnamed_block')
+                block_base = safe_get_text(block, 'ipxact:baseAddress', ns, 'N/A')
+                block_range = safe_get_text(block, 'ipxact:range', ns, 'N/A')
+                block_width = safe_get_text(block, 'ipxact:width', ns, 'N/A')
+                block_usage = safe_get_text(block, 'ipxact:usage', ns, 'N/A')
                 
                 # Find registers directly under address block
                 for register in block.findall('ipxact:register', ns):
-                    reg_name = safe_get_text(register, 'ipxact:name', 'unnamed_register')
-                    reg_description = safe_get_text(register, 'ipxact:description', '')
-                    reg_read_action = safe_get_text(register, 'ipxact:readAction', 'N/A')  # Extract readAction
+                    reg_name = safe_get_text(register, 'ipxact:name', ns, 'unnamed_register')
+                    reg_description = safe_get_text(register, 'ipxact:description', ns, 'N/A')
+                    reg_read_action = safe_get_text(register, 'ipxact:readAction', ns, 'N/A')  # Extract readAction
                     
                     print(f"Debug: Found register - {reg_name} (Description: {reg_description}, ReadAction: {reg_read_action})")
                     
                     # Process fields
-                    fields = []
                     fields_elem = register.find('ipxact:fields', ns)
+                    fields = []
                     if fields_elem is not None:
                         for field in fields_elem.findall('ipxact:field', ns):
-                            field_name = safe_get_text(field, 'ipxact:name', 'unnamed_field')
-                            field_desc = safe_get_text(field, 'ipxact:description', '')
-                            field_reset = safe_get_text(field, './/ipxact:reset/ipxact:value', '0')
-                            
-                            # Process all child elements of the field in order
-                            field_elements = []
-                            for child in field:
-                                tag = child.tag.split('}')[-1]  # Remove namespace
-                                if tag == 'writeValueConstraint':
-                                    min_value = safe_get_text(child, 'ipxact:minimum', 'N/A')
-                                    max_value = safe_get_text(child, 'ipxact:maximum', 'N/A')
-                                    field_elements.append({
-                                        'type': 'writeValueConstraint',
-                                        'minimum': min_value,
-                                        'maximum': max_value
-                                    })
-                                elif tag == 'modifiedWriteValue':
-                                    field_elements.append({
-                                        'type': 'modifiedWriteValue',
-                                        'value': child.text.strip() if child.text else 'N/A'
-                                    })
-                                elif tag == 'reset':
-                                    reset_value = safe_get_text(child, 'ipxact:value', '0')
-                                    field_elements.append({
-                                        'type': 'reset',
-                                        'value': reset_value
-                                    })
-                                elif tag == 'readAction':  # Handle readAction within fields
-                                    field_elements.append({
-                                        'type': 'readAction',
-                                        'value': child.text.strip() if child.text else 'N/A'
-                                    })
-                                else:
-                                    field_elements.append({
-                                        'type': tag,
-                                        'value': child.text.strip() if child.text else 'N/A'
-                                    })
-                            
-                            field_info = {
-                                'name': field_name,
-                                'description': field_desc,
-                                'bit_offset': safe_get_text(field, 'ipxact:bitOffset', '0'),
-                                'bit_width': safe_get_text(field, 'ipxact:bitWidth', '1'),
-                                'access': safe_get_text(field, 'ipxact:access', 'read-write'),
-                                'elements': field_elements  # Preserve order of child elements
-                            }
+                            field_info = parse_field_info(field, ns)
                             fields.append(field_info)
                     
                     register_info = {
                         'memory_map_name': memory_map_name,
-                        'memory_map_description': memory_map_description,
+                        'memory_map_description': safe_get_text(memory_map, 'ipxact:description', ns, 'N/A'),
                         'block_name': block_name,
-                        'block_base_address': block_base,
-                        'block_range': block_range,
-                        'block_width': block_width,
-                        'block_usage': block_usage,
+                        'block_base_address': safe_get_text(block, 'ipxact:baseAddress', ns, 'N/A'),
+                        'block_range': safe_get_text(block, 'ipxact:range', ns, 'N/A'),
+                        'block_width': safe_get_text(block, 'ipxact:width', ns, 'N/A'),
+                        'block_usage': safe_get_text(block, 'ipxact:usage', ns, 'N/A'),
                         'register_name': reg_name,
-                        'register_offset': safe_get_text(register, 'ipxact:addressOffset', '0'),
-                        'register_size': safe_get_text(register, 'ipxact:size', '32'),
+                        'register_offset': safe_get_text(register, 'ipxact:addressOffset', ns, 'N/A'),
+                        'register_size': safe_get_text(register, 'ipxact:size', ns, 'N/A'),
                         'register_description': reg_description,
-                        'register_access': safe_get_text(register, 'ipxact:access', 'read-write'),
-                        'register_reset_value': safe_get_text(register, './/ipxact:reset/ipxact:value', '0'),
-                        'register_reset_mask': safe_get_text(register, './/ipxact:reset/ipxact:mask', 'FFFFFFFF'),
-                        'register_fields': json.dumps(fields),  # Store fields as JSON
-                        'hdl_path': safe_get_text(register, './/ipxact:vendorExtensions/ipxact:hdlPath', ''),
-                        'register_read_action': reg_read_action,  # Store readAction
-                        'created_date': datetime.now().isoformat()  # Add created_date
+                        'register_access': safe_get_text(register, 'ipxact:access', ns, 'N/A'),
+                        'register_reset_value': safe_get_text(register, './/ipxact:reset/ipxact:value', ns, 'N/A'),
+                        'register_reset_mask': safe_get_text(register, './/ipxact:reset/ipxact:mask', ns, 'N/A'),
+                        'register_fields': json.dumps(fields) if fields else 'N/A',
+                        'hdl_path': safe_get_text(register, './/ipxact:vendorExtensions/ipxact:hdlPath', ns, 'N/A'),
+                        'register_read_action': reg_read_action if reg_read_action != '' else 'N/A',
+                        'created_date': datetime.now().isoformat()
                     }
                     registers_info.append(register_info)
         
