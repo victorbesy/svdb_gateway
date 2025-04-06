@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipxact:busInterface xmlns:ipxact="http://www.accellera.org/XMLSchema/IPXACT/1685-2014">
+    <ipxact:name>axi_slave</ipxact:name>
+    <ipxact:busType vendor="arm.com" library="AMBA4" name="AXI4" version="r0p0"/>
+    <ipxact:slave>
+        <ipxact:memoryMapRef memoryMapRef="reg_map"/>
+    </ipxact:slave>
+</ipxact:busInterface>

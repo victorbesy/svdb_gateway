@@ -1,0 +1,236 @@
+#!/usr/bin/env python3
+
+import sys
+import os
+import argparse
+import sqlite3
+from pathlib import Path
+import xml.etree.ElementTree as ET
+from typing import Dict
+from datetime import datetime
+
+def setup_argument_parser():
+    parser = argparse.ArgumentParser(
+        description='Convert IP-XACT XML header to SQLite database'
+    )
+    parser.add_argument(
+        '-i', '--input',
+        help='Input XML file path',
+        required=True,
+        type=str
+    )
+    parser.add_argument(
+        '-d', '--database',
+        help='SQLite database path (defaults to current directory)',
+        type=str,
+        default=os.getcwd()
+    )
+    return parser
+
+def validate_input_file(file_path):
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"Input file not found: {file_path}")
+    if not file_path.lower().endswith('.xml'):
+        raise ValueError(f"Input file must be an XML file: {file_path}")
+
+def get_database_path(args):
+    input_file = Path(args.input)
+    db_path = Path(args.database)
+    
+    # If database argument is just a directory, use input filename
+    if db_path.is_dir():
+        db_name = input_file.stem + '.db'
+        db_path = db_path / db_name
+    
+    return db_path
+
+def get_xml_version(xml_file: str) -> Dict[str, str]:
+    """Extract XML version and encoding from file."""
+    try:
+        with open(xml_file, 'r', encoding='utf-8') as f:
+            first_line = f.readline().strip()
+        
+        if first_line.startswith('<?xml'):
+            version = first_line.split('version="')[1].split('"')[0]
+            encoding = first_line.split('encoding="')[1].split('"')[0]
+        else:
+            version = "1.0"
+            encoding = "UTF-8"
+            
+        return {
+            'version': version,
+            'encoding': encoding
+        }
+    except Exception as e:
+        raise ValueError(f"Failed to extract XML version info: {e}")
+
+def create_header_table(cursor: sqlite3.Cursor):
+    """Create the IP-XACT header table if it doesn't exist."""
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS ipxact_header (
+            id INTEGER PRIMARY KEY,
+            xml_version TEXT,
+            xml_encoding TEXT,
+            schema_version TEXT,
+            vendor TEXT,
+            library TEXT,
+            name TEXT,
+            version TEXT,
+            description TEXT,
+            created_date TEXT
+        )
+    ''')
+
+def parse_ipxact_header(xml_file: str) -> Dict[str, str]:
+    """Parse IP-XACT header information from XML file."""
+    try:
+        xml_info = get_xml_version(xml_file)
+        
+        tree = ET.parse(xml_file)
+        root = tree.getroot()
+        
+        ns = {'ipxact': root.tag.split('}')[0].strip('{')}
+        
+        header = {
+            'xml_version': xml_info['version'],
+            'xml_encoding': xml_info['encoding'],
+            'schema_version': ns.get('ipxact', ''),
+            'vendor': root.find('.//ipxact:vendor', ns).text if root.find('.//ipxact:vendor', ns) is not None else '',
+            'library': root.find('.//ipxact:library', ns).text if root.find('.//ipxact:library', ns) is not None else '',
+            'name': root.find('.//ipxact:name', ns).text if root.find('.//ipxact:name', ns) is not None else '',
+            'version': root.find('.//ipxact:version', ns).text if root.find('.//ipxact:version', ns) is not None else '',
+            'description': root.find('.//ipxact:description', ns).text if root.find('.//ipxact:description', ns) is not None else '',
+            'created_date': datetime.now().isoformat()
+        }
+        return header
+    except ET.ParseError as e:
+        raise ValueError(f"Invalid XML file: {e}")
+
+def create_database(db_path: Path, header_info: Dict[str, str]):
+    """Create SQLite database or update existing one with header information."""
+    try:
+        db_exists = db_path.exists()
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        
+        create_header_table(cursor)
+        
+        # Add current timestamp for new records
+        header_info['created_date'] = datetime.now().isoformat()
+        
+        if db_exists:
+            print(f"\nWARNING: Database '{db_path}' already exists! Checking for duplicate records...")
+            
+            # Get complete existing record info for comparison
+            cursor.execute('''
+                SELECT xml_version, xml_encoding, schema_version, vendor, library, name, version, description, created_date 
+                FROM ipxact_header 
+                WHERE vendor = ? AND library = ? AND name = ? AND version = ?
+            ''', (header_info['vendor'], header_info['library'], 
+                  header_info['name'], header_info['version']))
+            existing = cursor.fetchone()
+            
+            if existing:
+                print(f"\nSkipping: Found existing record - XML v{existing[0]}({existing[1]}), Schema: {existing[2]}, Vendor: {existing[3]}, Lib: {existing[4]}, Name: {existing[5]}, Ver: {existing[6]}, Desc: {existing[7]}, Created: {existing[8]}")
+            else:
+                print(f"\nInserting: New record - XML v{header_info['xml_version']}({header_info['xml_encoding']}), Schema: {header_info['schema_version']}, Vendor: {header_info['vendor']}, Lib: {header_info['library']}, Name: {header_info['name']}, Ver: {header_info['version']}, Desc: {header_info['description']}, Created: {header_info['created_date']}")
+                
+                cursor.execute('''
+                    INSERT INTO ipxact_header (
+                        xml_version, xml_encoding, schema_version, vendor, library, 
+                        name, version, description, created_date
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ''', (
+                    header_info['xml_version'],
+                    header_info['xml_encoding'],
+                    header_info['schema_version'],
+                    header_info['vendor'],
+                    header_info['library'],
+                    header_info['name'],
+                    header_info['version'],
+                    header_info['description'],
+                    header_info['created_date']
+                ))
+                print("\nNew header information inserted successfully.")
+        else:
+            print(f"\nCreating new database: {db_path}")
+            cursor.execute('''
+                INSERT INTO ipxact_header (
+                    xml_version, xml_encoding, schema_version, vendor, library, 
+                    name, version, description, created_date
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (
+                header_info['xml_version'],
+                header_info['xml_encoding'],
+                header_info['schema_version'],
+                header_info['vendor'],
+                header_info['library'],
+                header_info['name'],
+                header_info['version'],
+                header_info['description'],
+                header_info['created_date']
+            ))
+        
+        conn.commit()
+        return conn
+    except sqlite3.Error as e:
+        raise Exception(f"Database error: {e}")
+
+def record_exists(cursor: sqlite3.Cursor, table: str, record: Dict[str, str]) -> bool:
+    """Check if a record with the same key fields exists in the table, ignoring created_date."""
+    if table == 'ipxact_header':
+        cursor.execute('''
+            SELECT COUNT(*) FROM ipxact_header 
+            WHERE vendor = ? 
+            AND library = ? 
+            AND name = ? 
+            AND version = ?
+            AND xml_version = ?
+            AND xml_encoding = ?
+            AND schema_version = ?
+            AND description = ?
+        ''', (record['vendor'], record['library'], 
+              record['name'], record['version'],
+              record['xml_version'], record['xml_encoding'],
+              record['schema_version'], record['description']))
+    else:  # registers table
+        cursor.execute('''
+            SELECT COUNT(*) FROM registers 
+            WHERE memory_map_name = ? 
+            AND block_name = ? 
+            AND register_name = ? 
+            AND register_offset = ?
+        ''', (record['memory_map_name'], record['block_name'], 
+              record['register_name'], record['register_offset']))
+    
+    return cursor.fetchone()[0] > 0
+
+def main():
+    try:
+        parser = setup_argument_parser()
+        args = parser.parse_args()
+
+        validate_input_file(args.input)
+        db_path = get_database_path(args)
+
+        print(f"\nProcessing:")
+        print(f"Input XML:     {args.input}")
+        print(f"Database path: {db_path}")
+
+        header_info = parse_ipxact_header(args.input)
+        conn = create_database(db_path, header_info)
+        
+        conn.close()
+
+    except FileNotFoundError as e:
+        print(f"\nError: {e}", file=sys.stderr)
+        sys.exit(1)
+    except ValueError as e:
+        print(f"\nError: {e}", file=sys.stderr)
+        sys.exit(1)
+    except Exception as e:
+        print(f"\nUnexpected error: {e}", file=sys.stderr)
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()

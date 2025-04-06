@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipxact:component xmlns:ipxact="http://www.accellera.org/XMLSchema/IPXACT/1685-2014">
+    <ipxact:fileSets>
+        <ipxact:fileSet>
+            <ipxact:name>hdl_files</ipxact:name>
+            <ipxact:file>
+                <ipxact:name>src/top.v</ipxact:name>
+                <ipxact:fileType>verilogSource</ipxact:fileType>
+                <ipxact:isIncludeFile>false</ipxact:isIncludeFile>
+                <ipxact:logicalName>work</ipxact:logicalName>
+            </ipxact:file>
+        </ipxact:fileSet>
+    </ipxact:fileSets>
+</ipxact:component>

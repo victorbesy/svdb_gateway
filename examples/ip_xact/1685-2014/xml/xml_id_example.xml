@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipxact:component 
+    xmlns:ipxact="http://www.accellera.org/XMLSchema/IPXACT/1685-2014"
+    xmlns:xml="http://www.w3.org/XML/1998/namespace">
+    
+    <ipxact:vendor>example.com</ipxact:vendor>
+    <ipxact:library>xml_examples</ipxact:library>
+    <ipxact:name>xml_id_usage</ipxact:name>
+    <ipxact:version>1.0</ipxact:version>
+    
+    <!-- Using XML ID attributes as defined in xml.xsd -->
+    <ipxact:model xml:id="model_001">
+        <ipxact:views>
+            <ipxact:view xml:id="view_rtl">
+                <ipxact:name>rtl</ipxact:name>
+                <ipxact:description xml:id="desc_rtl">RTL implementation view</ipxact:description>
+            </ipxact:view>
+            <ipxact:view xml:id="view_behavioral">
+                <ipxact:name>behavioral</ipxact:name>
+                <ipxact:description xml:id="desc_behav">Behavioral simulation view</ipxact:description>
+            </ipxact:view>
+        </ipxact:views>
+        
+        <ipxact:ports>
+            <ipxact:port xml:id="port_clk">
+                <ipxact:name>clk</ipxact:name>
+                <ipxact:wire>
+                    <ipxact:direction>in</ipxact:direction>
+                </ipxact:wire>
+            </ipxact:port>
+            
+            <ipxact:port xml:id="port_rst">
+                <ipxact:name>rst_n</ipxact:name>
+                <ipxact:wire>
+                    <ipxact:direction>in</ipxact:direction>
+                </ipxact:wire>
+            </ipxact:port>
+        </ipxact:ports>
+    </ipxact:model>
+    
+    <ipxact:parameters>
+        <ipxact:parameter xml:id="param_width">
+            <ipxact:name>DATA_WIDTH</ipxact:name>
+            <ipxact:value>32</ipxact:value>
+        </ipxact:parameter>
+    </ipxact:parameters>
+    
+    <ipxact:fileSets>
+        <ipxact:fileSet xml:id="fileset_rtl">
+            <ipxact:name>hdl_files</ipxact:name>
+            <ipxact:file xml:id="file_top">
+                <ipxact:name>src/top.sv</ipxact:name>
+                <ipxact:fileType>systemVerilogSource</ipxact:fileType>
+            </ipxact:file>
+        </ipxact:fileSet>
+    </ipxact:fileSets>
+</ipxact:component>

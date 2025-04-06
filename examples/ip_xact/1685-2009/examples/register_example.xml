@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spirit:component xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009">
+    <spirit:vendor>example.com</spirit:vendor>
+    <spirit:library>ip_examples</spirit:library>
+    <spirit:name>register_block</spirit:name>
+    <spirit:version>1.0</spirit:version>
+
+    <spirit:memoryMaps>
+        <spirit:memoryMap>
+            <spirit:name>control_registers</spirit:name>
+            <spirit:addressBlock>
+                <spirit:name>reg_block_0</spirit:name>
+                <spirit:baseAddress spirit:format="long">0x0000</spirit:baseAddress>
+                <spirit:range>0x1000</spirit:range>
+                <spirit:width>32</spirit:width>
+
+                <!-- Read-Write Register -->
+                <spirit:register>
+                    <spirit:name>RW_REG</spirit:name>
+                    <spirit:displayName>Read-Write Register</spirit:displayName>
+                    <spirit:addressOffset>0x00</spirit:addressOffset>
+                    <spirit:size>32</spirit:size>
+                    <spirit:access>read-write</spirit:access>
+                    <spirit:reset>
+                        <spirit:value>0xDEADBEEF</spirit:value>
+                    </spirit:reset>
+                    <spirit:field>
+                        <spirit:name>RW_FIELD</spirit:name>
+                        <spirit:bitOffset>0</spirit:bitOffset>
+                        <spirit:bitWidth>32</spirit:bitWidth>
+                        <spirit:access>read-write</spirit:access>
+                        <spirit:vendorExtensions>
+                            <spirit:hdlPath>top.dut.rw_reg.field</spirit:hdlPath>
+                        </spirit:vendorExtensions>
+                    </spirit:field>
+                </spirit:register>
+
+                <!-- Read-Only Register -->
+                <spirit:register>
+                    <spirit:name>RO_REG</spirit:name>
+                    <spirit:displayName>Read-Only Register</spirit:displayName>
+                    <spirit:addressOffset>0x04</spirit:addressOffset>
+                    <spirit:size>32</spirit:size>
+                    <spirit:access>read-only</spirit:access>
+                    <spirit:reset>
+                        <spirit:value>0x12345678</spirit:value>
+                    </spirit:reset>
+                    <spirit:field>
+                        <spirit:name>RO_FIELD</spirit:name>
+                        <spirit:bitOffset>0</spirit:bitOffset>
+                        <spirit:bitWidth>32</spirit:bitWidth>
+                        <spirit:access>read-only</spirit:access>
+                        <spirit:vendorExtensions>
+                            <spirit:hdlPath>top.dut.ro_reg.field</spirit:hdlPath>
+                        </spirit:vendorExtensions>
+                    </spirit:field>
+                </spirit:register>
+
+                <!-- Write-Only Register -->
+                <spirit:register>
+                    <spirit:name>WO_REG</spirit:name>
+                    <spirit:displayName>Write-Only Register</spirit:displayName>
+                    <spirit:addressOffset>0x08</spirit:addressOffset>
+                    <spirit:size>32</spirit:size>
+                    <spirit:access>write-only</spirit:access>
+                    <spirit:reset>
+                        <spirit:value>0xAAAA5555</spirit:value>
+                    </spirit:reset>
+                    <spirit:field>
+                        <spirit:name>WO_FIELD</spirit:name>
+                        <spirit:bitOffset>0</spirit:bitOffset>
+                        <spirit:bitWidth>32</spirit:bitWidth>
+                        <spirit:access>write-only</spirit:access>
+                        <spirit:vendorExtensions>
+                            <spirit:hdlPath>top.dut.wo_reg.field</spirit:hdlPath>
+                        </spirit:vendorExtensions>
+                    </spirit:field>
+                </spirit:register>
+
+                <!-- Read-Clear Register -->
+                <spirit:register>
+                    <spirit:name>RC_REG</spirit:name>
+                    <spirit:displayName>Read-Clear Register</spirit:displayName>
+                    <spirit:addressOffset>0x0C</spirit:addressOffset>
+                    <spirit:size>32</spirit:size>
+                    <spirit:access>read-only</spirit:access>
+                    <spirit:reset>
+                        <spirit:value>0xF0F0F0F0</spirit:value>
+                    </spirit:reset>
+                    <spirit:field>
+                        <spirit:name>RC_FIELD</spirit:name>
+                        <spirit:bitOffset>0</spirit:bitOffset>
+                        <spirit:bitWidth>32</spirit:bitWidth>
+                        <spirit:access>read-only</spirit:access>
+                        <spirit:readAction>clear</spirit:readAction>
+                        <spirit:vendorExtensions>
+                            <spirit:hdlPath>top.dut.rc_reg.field</spirit:hdlPath>
+                        </spirit:vendorExtensions>
+                    </spirit:field>
+                </spirit:register>
+
+                <!-- Write-1-to-Clear Register -->
+                <spirit:register>
+                    <spirit:name>W1C_REG</spirit:name>
+                    <spirit:displayName>Write-1-to-Clear Register</spirit:displayName>
+                    <spirit:addressOffset>0x10</spirit:addressOffset>
+                    <spirit:size>32</spirit:size>
+                    <spirit:access>read-write</spirit:access>
+                    <spirit:reset>
+                        <spirit:value>0x55AA55AA</spirit:value>
+                    </spirit:reset>
+                    <spirit:field>
+                        <spirit:name>W1C_FIELD</spirit:name>
+                        <spirit:bitOffset>0</spirit:bitOffset>
+                        <spirit:bitWidth>32</spirit:bitWidth>
+                        <spirit:access>read-write</spirit:access>
+                        <spirit:modifiedWriteValue>oneToClear</spirit:modifiedWriteValue>
+                        <spirit:vendorExtensions>
+                            <spirit:hdlPath>top.dut.w1c_reg.field</spirit:hdlPath>
+                        </spirit:vendorExtensions>
+                    </spirit:field>
+                </spirit:register>
+
+                <!-- Write-1-to-Set Register -->
+                <spirit:register>
+                    <spirit:name>W1S_REG</spirit:name>
+                    <spirit:displayName>Write-1-to-Set Register</spirit:displayName>
+                    <spirit:addressOffset>0x14</spirit:addressOffset>
+                    <spirit:size>32</spirit:size>
+                    <spirit:access>read-write</spirit:access>
+                    <spirit:reset>
+                        <spirit:value>0x33CC33CC</spirit:value>
+                    </spirit:reset>
+                    <spirit:field>
+                        <spirit:name>W1S_FIELD</spirit:name>
+                        <spirit:bitOffset>0</spirit:bitOffset>
+                        <spirit:bitWidth>32</spirit:bitWidth>
+                        <spirit:access>read-write</spirit:access>
+                        <spirit:modifiedWriteValue>oneToSet</spirit:modifiedWriteValue>
+                        <spirit:vendorExtensions>
+                            <spirit:hdlPath>top.dut.w1s_reg.field</spirit:hdlPath>
+                        </spirit:vendorExtensions>
+                    </spirit:field>
+                </spirit:register>
+
+                <!-- Write-Only-Clear Register -->
+                <spirit:register>
+                    <spirit:name>WOC_REG</spirit:name>
+                    <spirit:displayName>Write-Only-Clear Register</spirit:displayName>
+                    <spirit:addressOffset>0x18</spirit:addressOffset>
+                    <spirit:size>32</spirit:size>
+                    <spirit:access>write-only</spirit:access>
+                    <spirit:reset>
+                        <spirit:value>0x99669966</spirit:value>
+                    </spirit:reset>
+                    <spirit:field>
+                        <spirit:name>WOC_FIELD</spirit:name>
+                        <spirit:bitOffset>0</spirit:bitOffset>
+                        <spirit:bitWidth>32</spirit:bitWidth>
+                        <spirit:access>write-only</spirit:access>
+                        <spirit:modifiedWriteValue>clear</spirit:modifiedWriteValue>
+                        <spirit:vendorExtensions>
+                            <spirit:hdlPath>top.dut.woc_reg.field</spirit:hdlPath>
+                        </spirit:vendorExtensions>
+                    </spirit:field>
+                </spirit:register>
+            </spirit:addressBlock>
+        </spirit:memoryMap>
+    </spirit:memoryMaps>
+</spirit:component>

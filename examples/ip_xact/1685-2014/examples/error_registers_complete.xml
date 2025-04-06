@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipxact:component xmlns:ipxact="http://www.accellera.org/XMLSchema/IPXACT/1685-2014">
+    <ipxact:vendor>example.com</ipxact:vendor>
+    <ipxact:library>registers</ipxact:library>
+    <ipxact:name>register_map</ipxact:name>
+    <ipxact:version>1.0</ipxact:version>
+
+    <ipxact:memoryMaps>
+        <ipxact:memoryMap>
+            <ipxact:name>SVDB_complete_register_map</ipxact:name>
+            <ipxact:description>Complete register map with all types of registers and access modes</ipxact:description>
+            <ipxact:addressBlock>
+                <ipxact:name>main_block</ipxact:name>
+                <ipxact:baseAddress>0x0000</ipxact:baseAddress>
+                <ipxact:range>0x1000</ipxact:range>
+                <ipxact:width>32</ipxact:width>
+                <ipxact:usage>register</ipxact:usage>
+
+                <!-- COMPLETE_REG with updated fields -->
+                <ipxact:register>
+                    <ipxact:name>SVDB_COMPLETE_REG</ipxact:name>
+                    <ipxact:fields>
+                        <ipxact:field>
+                            <ipxact:name>STATUS</ipxact:name>
+                            <ipxact:description>Complete register status field</ipxact:description>
+                            <ipxact:bitOffset>0</ipxact:bitOffset>
+                            <ipxact:bitWidth>32</ipxact:bitWidth>
+                            <ipxact:access>read-write</ipxact:access>
+                            <ipxact:reset>
+                                <ipxact:value>0x0</ipxact:value>
+                            </ipxact:reset>
+                        </ipxact:field>
+                    </ipxact:fields>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.complete_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+
+                <ipxact:register>
+                    <ipxact:name>SVDB_RW_REG</ipxact:name>
+                    <ipxact:fields>
+                        <ipxact:field>
+                            <ipxact:name>CONTROL</ipxact:name>
+                            <ipxact:description>Control field with standard read-write access</ipxact:description>
+                            <ipxact:bitOffset>0</ipxact:bitOffset>
+                            <ipxact:bitWidth>4</ipxact:bitWidth>
+                            <ipxact:access>read-write</ipxact:access>
+                            <ipxact:modifiedWriteValue>modify</ipxact:modifiedWriteValue>
+                            <ipxact:writeValueConstraint>
+                                <ipxact:minimum>0x0</ipxact:minimum>
+                                <ipxact:maximum>0xF</ipxact:maximum>
+                            </ipxact:writeValueConstraint>
+                            <ipxact:reset>
+                                <ipxact:value>0x0</ipxact:value>
+                            </ipxact:reset>
+                        </ipxact:field>
+                        <ipxact:field>
+                            <ipxact:name>STATUS</ipxact:name>
+                            <ipxact:description>Status field with read-only access and clear on read</ipxact:description>
+                            <ipxact:bitOffset>4</ipxact:bitOffset>
+                            <ipxact:bitWidth>4</ipxact:bitWidth>
+                            <ipxact:access>read-only</ipxact:access>
+                            <ipxact:readAction>clear</ipxact:readAction>
+                            <ipxact:reset>
+                                <ipxact:value>0x0</ipxact:value>
+                            </ipxact:reset>
+                        </ipxact:field>
+                        <ipxact:field>
+                            <ipxact:name>COMMAND</ipxact:name>
+                            <ipxact:description>Command field with write-only access</ipxact:description>
+                            <ipxact:bitOffset>8</ipxact:bitOffset>
+                            <ipxact:bitWidth>4</ipxact:bitWidth>
+                            <ipxact:access>write-only</ipxact:access>
+                            <ipxact:modifiedWriteValue>oneToSet</ipxact:modifiedWriteValue>
+                        </ipxact:field>
+                        <ipxact:field>
+                            <ipxact:name>CONFIG</ipxact:name>
+                            <ipxact:description>Configuration field with write-once access</ipxact:description>
+                            <ipxact:bitOffset>12</ipxact:bitOffset>
+                            <ipxact:bitWidth>4</ipxact:bitWidth>
+                            <ipxact:access>writeOnce</ipxact:access>
+                            <ipxact:reset>
+                                <ipxact:value>0x5</ipxact:value>
+                            </ipxact:reset>
+                        </ipxact:field>
+                        <ipxact:field>
+                            <ipxact:name>CALIB</ipxact:name>
+                            <ipxact:description>Calibration configuration field</ipxact:description>
+                            <ipxact:bitOffset>16</ipxact:bitOffset>
+                            <ipxact:bitWidth>4</ipxact:bitWidth>
+                            <ipxact:access>read-write</ipxact:access>
+                            <ipxact:reset>
+                                <ipxact:value>0x0</ipxact:value>
+                            </ipxact:reset>
+                        </ipxact:field>
+                        <ipxact:field>
+                            <ipxact:name>IRQ_STATUS</ipxact:name>
+                            <ipxact:description>Interrupt status field</ipxact:description>
+                            <ipxact:bitOffset>20</ipxact:bitOffset>
+                            <ipxact:bitWidth>4</ipxact:bitWidth>
+                            <ipxact:access>read-only</ipxact:access>
+                            <ipxact:reset>
+                                <ipxact:value>0x0</ipxact:value>
+                            </ipxact:reset>
+                        </ipxact:field>
+                        <ipxact:field>
+                            <ipxact:name>IRQ_CLEAR</ipxact:name>
+                            <ipxact:description>Interrupt clear field</ipxact:description>
+                            <ipxact:bitOffset>24</ipxact:bitOffset>
+                            <ipxact:bitWidth>4</ipxact:bitWidth>
+                            <ipxact:access>write-only</ipxact:access>
+                            <ipxact:modifiedWriteValue>oneToClear</ipxact:modifiedWriteValue>
+                        </ipxact:field>
+                        <ipxact:field>
+                            <ipxact:name>EVENT</ipxact:name>
+                            <ipxact:description>Event status field</ipxact:description>
+                            <ipxact:bitOffset>28</ipxact:bitOffset>
+                            <ipxact:bitWidth>4</ipxact:bitWidth>
+                            <ipxact:access>read-write</ipxact:access>
+                            <ipxact:reset>
+                                <ipxact:value>0x0</ipxact:value>
+                            </ipxact:reset>
+                        </ipxact:field>
+                    </ipxact:fields>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.rw_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+
+                <!-- RO_REG with updated fields -->
+                <ipxact:register>
+                    <ipxact:name>SVDB_RO_REG</ipxact:name>
+                    <ipxact:fields>
+                        <ipxact:field>
+                            <ipxact:name>STATUS</ipxact:name>
+                            <ipxact:description>Read-only status field</ipxact:description>
+                            <ipxact:bitOffset>0</ipxact:bitOffset>
+                            <ipxact:bitWidth>32</ipxact:bitWidth>
+                            <ipxact:access>read-only</ipxact:access>
+                            <ipxact:reset>
+                                <ipxact:value>0x0</ipxact:value>
+                            </ipxact:reset>
+                        </ipxact:field>
+                    </ipxact:fields>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.ro_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+
+                <!-- WO_REG with updated fields -->
+                <ipxact:register>
+                    <ipxact:name>SVDB_WO_REG</ipxact:name>
+                    <ipxact:fields>
+                        <ipxact:field>
+                            <ipxact:name>CONTROL</ipxact:name>
+                            <ipxact:description>Write-only control field</ipxact:description>
+                            <ipxact:bitOffset>0</ipxact:bitOffset>
+                            <ipxact:bitWidth>32</ipxact:bitWidth>
+                            <ipxact:access>write-only</ipxact:access>
+                            <ipxact:modifiedWriteValue>modify</ipxact:modifiedWriteValue>
+                        </ipxact:field>
+                    </ipxact:fields>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.wo_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+
+                <!-- RW1_REG with updated fields -->
+                <ipxact:register>
+                    <ipxact:name>SVDB_RW1_REG</ipxact:name>
+                    <ipxact:fields>
+                        <ipxact:field>
+                            <ipxact:name>CONTROL</ipxact:name>
+                            <ipxact:description>Write-once control field</ipxact:description>
+                            <ipxact:bitOffset>0</ipxact:bitOffset>
+                            <ipxact:bitWidth>32</ipxact:bitWidth>
+                            <ipxact:access>writeOnce</ipxact:access>
+                            <ipxact:reset>
+                                <ipxact:value>0x0</ipxact:value>
+                            </ipxact:reset>
+                        </ipxact:field>
+                    </ipxact:fields>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.rw1_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+
+                <!-- RC_REG with updated fields -->
+                <ipxact:register>
+                    <ipxact:name>SVDB_RC_REG</ipxact:name>
+                    <ipxact:fields>
+                        <ipxact:field>
+                            <ipxact:name>STATUS</ipxact:name>
+                            <ipxact:description>Read-clear status field</ipxact:description>
+                            <ipxact:bitOffset>0</ipxact:bitOffset>
+                            <ipxact:bitWidth>32</ipxact:bitWidth>
+                            <ipxact:access>read-only</ipxact:access>
+                            <ipxact:readAction>clear</ipxact:readAction>
+                            <ipxact:reset>
+                                <ipxact:value>0x0</ipxact:value>
+                            </ipxact:reset>
+                        </ipxact:field>
+                    </ipxact:fields>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.rc_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+
+                <!-- W1_REG with updated fields -->
+                <ipxact:register>
+                    <ipxact:name>SVDB_W1_REG</ipxact:name>
+                    <ipxact:fields>
+                        <ipxact:field>
+                            <ipxact:name>CONTROL</ipxact:name>
+                            <ipxact:description>Write-1-to-clear control field</ipxact:description>
+                            <ipxact:bitOffset>0</ipxact:bitOffset>
+                            <ipxact:bitWidth>32</ipxact:bitWidth>
+                            <ipxact:access>read-write</ipxact:access>
+                            <ipxact:modifiedWriteValue>oneToClear</ipxact:modifiedWriteValue>
+                            <ipxact:reset>
+                                <ipxact:value>0x0</ipxact:value>
+                            </ipxact:reset>
+                        </ipxact:field>
+                    </ipxact:fields>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.w1_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+
+                <!-- SVDB_RWC_REG remains unchanged -->
+                <ipxact:register>
+                    <ipxact:name>SVDB_RWC_REG</ipxact:name>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.rwc_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+
+                <!-- READ_CLEAR_REG with updated fields -->
+                <ipxact:register>
+                    <ipxact:name>SVDB_READ_CLEAR_REG</ipxact:name>
+                    <ipxact:fields>
+                        <ipxact:field>
+                            <ipxact:name>CLEAR_ON_READ</ipxact:name>
+                            <ipxact:description>Field that clears on read</ipxact:description>
+                            <ipxact:bitOffset>0</ipxact:bitOffset>
+                            <ipxact:bitWidth>32</ipxact:bitWidth>
+                            <ipxact:access>read-only</ipxact:access>
+                            <ipxact:readAction>clear</ipxact:readAction>
+                            <ipxact:reset>
+                                <ipxact:value>0x0</ipxact:value>
+                            </ipxact:reset>
+                        </ipxact:field>
+                    </ipxact:fields>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.read_clear_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+
+                <!-- READ_ACTIONS_REG with updated fields -->
+                <ipxact:register>
+                    <ipxact:name>SVDB_READ_ACTIONS_REG</ipxact:name>
+                    <ipxact:fields>
+                        <ipxact:field>
+                            <ipxact:name>CLEAR_FIELD</ipxact:name>
+                            <ipxact:description>Field that clears on read</ipxact:description>
+                            <ipxact:bitOffset>0</ipxact:bitOffset>
+                            <ipxact:bitWidth>4</ipxact:bitWidth>
+                            <ipxact:access>read-only</ipxact:access>
+                            <ipxact:readAction>clear</ipxact:readAction>
+                        </ipxact:field>
+                        <ipxact:field>
+                            <ipxact:name>SET_FIELD</ipxact:name>
+                            <ipxact:description>Field that sets on read</ipxact:description>
+                            <ipxact:bitOffset>4</ipxact:bitOffset>
+                            <ipxact:bitWidth>4</ipxact:bitWidth>
+                            <ipxact:access>read-only</ipxact:access>
+                            <ipxact:readAction>set</ipxact:readAction>
+                        </ipxact:field>
+                        <ipxact:field>
+                            <ipxact:name>MODIFY_FIELD</ipxact:name>
+                            <ipxact:description>Field that modifies on read</ipxact:description>
+                            <ipxact:bitOffset>8</ipxact:bitOffset>
+                            <ipxact:bitWidth>4</ipxact:bitWidth>
+                            <ipxact:access>read-only</ipxact:access>
+                            <ipxact:readAction>modify</ipxact:readAction>
+                        </ipxact:field>
+                    </ipxact:fields>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.read_actions_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+
+                <!-- WRITE_ACTIONS_REG with updated fields -->
+                <ipxact:register>
+                    <ipxact:name>SVDB_WRITE_ACTIONS_REG</ipxact:name>
+                    <ipxact:fields>
+                        <ipxact:field>
+                            <ipxact:name>ONE_TO_CLEAR</ipxact:name>
+                            <ipxact:description>Write 1 to clear field</ipxact:description>
+                            <ipxact:bitOffset>0</ipxact:bitOffset>
+                            <ipxact:bitWidth>4</ipxact:bitWidth>
+                            <ipxact:access>read-write</ipxact:access>
+                            <ipxact:modifiedWriteValue>oneToClear</ipxact:modifiedWriteValue>
+                        </ipxact:field>
+                        <ipxact:field>
+                            <ipxact:name>ONE_TO_SET</ipxact:name>
+                            <ipxact:description>Write 1 to set field</ipxact:description>
+                            <ipxact:bitOffset>4</ipxact:bitOffset>
+                            <ipxact:bitWidth>4</ipxact:bitWidth>
+                            <ipxact:access>read-write</ipxact:access>
+                            <ipxact:modifiedWriteValue>oneToSet</ipxact:modifiedWriteValue>
+                        </ipxact:field>
+                        <ipxact:field>
+                            <ipxact:name>ONE_TO_TOGGLE</ipxact:name>
+                            <ipxact:description>Write 1 to toggle field</ipxact:description>
+                            <ipxact:bitOffset>8</ipxact:bitOffset>
+                            <ipxact:bitWidth>4</ipxact:bitWidth>
+                            <ipxact:access>read-write</ipxact:access>
+                            <ipxact:modifiedWriteValue>oneToToggle</ipxact:modifiedWriteValue>
+                        </ipxact:field>
+                    </ipxact:fields>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.write_actions_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+            </ipxact:addressBlock>
+        </ipxact:memoryMap>
+    </ipxact:memoryMaps>
+</ipxact:component>

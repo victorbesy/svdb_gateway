@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipxact:model xmlns:ipxact="http://www.accellera.org/XMLSchema/IPXACT/1685-2014">
+    <ipxact:views>
+        <ipxact:view>
+            <ipxact:name>rtl_view</ipxact:name>
+            <ipxact:envIdentifier>verilog:simulation</ipxact:envIdentifier>
+            <ipxact:language>verilog</ipxact:language>
+        </ipxact:view>
+        <ipxact:view>
+            <ipxact:name>behavioral_view</ipxact:name>
+            <ipxact:envIdentifier>systemc:simulation</ipxact:envIdentifier>
+            <ipxact:language>systemc</ipxact:language>
+        </ipxact:view>
+    </ipxact:views>
+</ipxact:model>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipxact:design xmlns:ipxact="http://www.accellera.org/XMLSchema/IPXACT/1685-2014">
+    <ipxact:componentInstances>
+        <ipxact:componentInstance>
+            <ipxact:instanceName>cpu0</ipxact:instanceName>
+            <ipxact:componentRef vendor="example.com" library="processors" name="cortex_m4" version="1.0"/>
+        </ipxact:componentInstance>
+        <ipxact:componentInstance>
+            <ipxact:instanceName>uart0</ipxact:instanceName>
+            <ipxact:componentRef vendor="example.com" library="peripherals" name="uart" version="1.0"/>
+        </ipxact:componentInstance>
+    </ipxact:componentInstances>
+</ipxact:design>

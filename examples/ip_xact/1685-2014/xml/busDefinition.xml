@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipxact:busDefinition xmlns:ipxact="http://www.accellera.org/XMLSchema/IPXACT/1685-2014">
+    <ipxact:vendor>example.com</ipxact:vendor>
+    <ipxact:library>bus_definitions</ipxact:library>
+    <ipxact:name>custom_bus</ipxact:name>
+    <ipxact:version>1.0</ipxact:version>
+    <ipxact:directConnection>false</ipxact:directConnection>
+    <ipxact:isAddressable>true</ipxact:isAddressable>
+    <ipxact:maxMasters>1</ipxact:maxMasters>
+    <ipxact:maxSlaves>4</ipxact:maxSlaves>
+</ipxact:busDefinition>

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipxact:component xmlns:ipxact="http://www.accellera.org/XMLSchema/IPXACT/1685-2014">
+    <ipxact:memoryMaps>
+        <ipxact:memoryMap>
+            <ipxact:name>complete_register_map</ipxact:name>
+            <ipxact:description>Example showing all possible register attributes</ipxact:description>
+            <ipxact:addressBlock>
+                <ipxact:name>control_block</ipxact:name>
+                <ipxact:baseAddress>0x0000</ipxact:baseAddress>
+                <ipxact:range>0x1000</ipxact:range>
+                <ipxact:width>32</ipxact:width>
+                <ipxact:usage>register</ipxact:usage>
+                
+                <!-- Register with all possible attributes -->
+                <ipxact:register>
+                    <ipxact:name>COMPLETE_REG</ipxact:name>
+                    <ipxact:displayName>Complete Register Example</ipxact:displayName>
+                    <ipxact:description>Register demonstrating all possible attributes</ipxact:description>
+                    <ipxact:addressOffset>0x00</ipxact:addressOffset>
+                    <ipxact:size>32</ipxact:size>
+                    <ipxact:access>read-write</ipxact:access>
+                    <ipxact:reset>
+                        <ipxact:value>0x12345678</ipxact:value>
+                        <ipxact:mask>0xFFFFFFFF</ipxact:mask>
+                    </ipxact:reset>
+                    <ipxact:dim>4</ipxact:dim>
+                    <ipxact:addressIncrement>0x4</ipxact:addressIncrement>
+                    <ipxact:typeIdentifier>config_reg</ipxact:typeIdentifier>
+                    <ipxact:volatile>true</ipxact:volatile>
+                    
+                    <!-- Fields with all possible attributes -->
+                    <ipxact:fields>
+                        <ipxact:field>
+                            <ipxact:name>STATUS</ipxact:name>
+                            <ipxact:displayName>Status Field</ipxact:displayName>
+                            <ipxact:description>Status information</ipxact:description>
+                            <ipxact:bitOffset>0</ipxact:bitOffset>
+                            <ipxact:bitWidth>4</ipxact:bitWidth>
+                            <ipxact:access>read-only</ipxact:access>
+                            <ipxact:reset>
+                                <ipxact:value>0x5</ipxact:value>
+                            </ipxact:reset>
+                            <ipxact:enumeratedValues>
+                                <ipxact:enumeratedValue>
+                                    <ipxact:name>IDLE</ipxact:name>
+                                    <ipxact:value>0x0</ipxact:value>
+                                </ipxact:enumeratedValue>
+                                <ipxact:enumeratedValue>
+                                    <ipxact:name>BUSY</ipxact:name>
+                                    <ipxact:value>0x1</ipxact:value>
+                                </ipxact:enumeratedValue>
+                            </ipxact:enumeratedValues>
+                            <ipxact:modifiedWriteValue>oneToClear</ipxact:modifiedWriteValue>
+                            <ipxact:writeValueConstraint>
+                                <ipxact:minimum>0x0</ipxact:minimum>
+                                <ipxact:maximum>0xF</ipxact:maximum>
+                            </ipxact:writeValueConstraint>
+                            <ipxact:readAction>clear</ipxact:readAction>
+                            <ipxact:vendorExtensions>
+                                <ipxact:hdlPath>top.dut.status_reg[3:0]</ipxact:hdlPath>
+                            </ipxact:vendorExtensions>
+                        </ipxact:field>
+
+                        <ipxact:field>
+                            <ipxact:name>CONTROL</ipxact:name>
+                            <ipxact:bitOffset>4</ipxact:bitOffset>
+                            <ipxact:bitWidth>4</ipxact:bitWidth>
+                            <ipxact:access>read-write</ipxact:access>
+                            <ipxact:modifiedWriteValue>modify</ipxact:modifiedWriteValue>
+                            <ipxact:testable>true</ipxact:testable>
+                            <ipxact:volatile>false</ipxact:volatile>
+                        </ipxact:field>
+
+                        <ipxact:field>
+                            <ipxact:name>INTERRUPT_MASK</ipxact:name>
+                            <ipxact:bitOffset>8</ipxact:bitOffset>
+                            <ipxact:bitWidth>8</ipxact:bitWidth>
+                            <ipxact:access>read-write</ipxact:access>
+                            <ipxact:modifiedWriteValue>set</ipxact:modifiedWriteValue>
+                            <ipxact:readAction>modify</ipxact:readAction>
+                            <ipxact:parameters>
+                                <ipxact:parameter>
+                                    <ipxact:name>USAGE</ipxact:name>
+                                    <ipxact:value>Interrupt mask bits</ipxact:value>
+                                </ipxact:parameter>
+                            </ipxact:parameters>
+                        </ipxact:field>
+                    </ipxact:fields>
+
+                    <ipxact:parameters>
+                        <ipxact:parameter>
+                            <ipxact:name>HW_ACCESS</ipxact:name>
+                            <ipxact:value>Read-Write</ipxact:value>
+                        </ipxact:parameter>
+                    </ipxact:parameters>
+                    
+                    <ipxact:alternateRegisters>
+                        <ipxact:alternateRegister>
+                            <ipxact:name>COMPLETE_REG_ALT</ipxact:name>
+                            <ipxact:displayName>Alternate View</ipxact:displayName>
+                            <ipxact:description>Alternate register view</ipxact:description>
+                        </ipxact:alternateRegister>
+                    </ipxact:alternateRegisters>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.complete_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+
+                <!-- Read-Write Register -->
+                <ipxact:register>
+                    <ipxact:name>RW_REG</ipxact:name>
+                    <ipxact:addressOffset>0x00</ipxact:addressOffset>
+                    <ipxact:size>32</ipxact:size>
+                    <ipxact:access>read-write</ipxact:access>
+                    <ipxact:reset>
+                        <ipxact:value>0xDEADBEEF</ipxact:value>
+                        <ipxact:mask>0xFFFFFFFF</ipxact:mask>
+                    </ipxact:reset>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.rw_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+
+                <!-- Read-Only Register -->
+                <ipxact:register>
+                    <ipxact:name>RO_REG</ipxact:name>
+                    <ipxact:addressOffset>0x04</ipxact:addressOffset>
+                    <ipxact:size>32</ipxact:size>
+                    <ipxact:access>read-only</ipxact:access>
+                    <ipxact:reset>
+                        <ipxact:value>0x12345678</ipxact:value>
+                    </ipxact:reset>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.ro_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+
+                <!-- Write-Only Register -->
+                <ipxact:register>
+                    <ipxact:name>WO_REG</ipxact:name>
+                    <ipxact:addressOffset>0x08</ipxact:addressOffset>
+                    <ipxact:size>32</ipxact:size>
+                    <ipxact:access>write-only</ipxact:access>
+                    <ipxact:reset>
+                        <ipxact:value>0x00000000</ipxact:value>
+                    </ipxact:reset>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.wo_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+
+                <!-- Read-Write-Once Register -->
+                <ipxact:register>
+                    <ipxact:name>RW1_REG</ipxact:name>
+                    <ipxact:addressOffset>0x0C</ipxact:addressOffset>
+                    <ipxact:size>32</ipxact:size>
+                    <ipxact:access>read-writeOnce</ipxact:access>
+                    <ipxact:reset>
+                        <ipxact:value>0xAAAA5555</ipxact:value>
+                    </ipxact:reset>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.rw1_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+
+                <!-- Read-Clear Register -->
+                <ipxact:register>
+                    <ipxact:name>RC_REG</ipxact:name>
+                    <ipxact:addressOffset>0x10</ipxact:addressOffset>
+                    <ipxact:size>32</ipxact:size>
+                    <ipxact:access>read-clear</ipxact:access>
+                    <ipxact:reset>
+                        <ipxact:value>0xFFFF0000</ipxact:value>
+                    </ipxact:reset>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.rc_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+
+                <!-- Write-Once Register -->
+                <ipxact:register>
+                    <ipxact:name>W1_REG</ipxact:name>
+                    <ipxact:addressOffset>0x14</ipxact:addressOffset>
+                    <ipxact:size>32</ipxact:size>
+                    <ipxact:access>writeOnce</ipxact:access>
+                    <ipxact:reset>
+                        <ipxact:value>0x00FF00FF</ipxact:value>
+                    </ipxact:reset>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.w1_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+
+                <!-- Read-Write-Clear Register -->
+                <ipxact:register>
+                    <ipxact:name>RWC_REG</ipxact:name>
+                    <ipxact:addressOffset>0x18</ipxact:addressOffset>
+                    <ipxact:size>32</ipxact:size>
+                    <ipxact:access>read-writeOnce-clear</ipxact:access>
+                    <ipxact:reset>
+                        <ipxact:value>0x55AA55AA</ipxact:value>
+                    </ipxact:reset>
+                    <ipxact:vendorExtensions>
+                        <ipxact:hdlPath>top.dut.rwc_reg</ipxact:hdlPath>
+                    </ipxact:vendorExtensions>
+                </ipxact:register>
+            </ipxact:addressBlock>
+        </ipxact:memoryMap>
+    </ipxact:memoryMaps>
+</ipxact:component>
