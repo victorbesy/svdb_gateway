@@ -128,6 +128,17 @@ def parse_ipxact_header(xml_file: str) -> Dict[str, str]:
             
         ns = {'ipxact': root.tag.split('}')[0].strip('{')}
         
+        # Define supported namespaces for future options
+        supported_namespaces = [
+            "http://www.accellera.org/XMLSchema/IPXACT/1685-2014",
+            #"http://www.accellera.org/XMLSchema/IPXACT/1685-2021"  # Example future namespace
+        ]
+        
+        # Check if the namespace matches any of the supported namespaces
+        if ns['ipxact'] not in supported_namespaces:
+            print(f"\nError: Unsupported IP-XACT namespace: {ns['ipxact']}. Supported namespaces are: {', '.join(supported_namespaces)}.")
+            sys.exit(1)
+        
         # Debug output
         print(f"\nDebug: XML Structure:")
         print(f"Root tag: {root.tag}")
