@@ -2,7 +2,7 @@
 
 # Set up directories
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-XML_DIR="/media/sf_workspace/svdb_gateway/examples/Leon2_1685-2022/Leon2/spiritconsortium.org/Leon2RTL/ahbstat/1.2"
+XML_DIR="/media/sf_workspace/svdb_gateway/examples/run_dir"
 OUTPUT_DIR="/home/v/TEMP"
 
 # Colors for output

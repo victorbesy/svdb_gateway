@@ -1,6 +1,6 @@
 import pytest
 import sqlite3
-import os
+# import os
 from pathlib import Path
 from sql2xml import (
     setup_argument_parser,
@@ -17,7 +17,7 @@ def temp_db_file(tmp_path):
     db_file = tmp_path / "test_registers.db"
     conn = sqlite3.connect(db_file)
     cursor = conn.cursor()
-    
+
     cursor.execute('''
         CREATE TABLE ipxact_header (
             id INTEGER PRIMARY KEY,
@@ -32,7 +32,7 @@ def temp_db_file(tmp_path):
             created_date TEXT
         )
     ''')
-    
+
     cursor.execute('''
         INSERT INTO ipxact_header (
             xml_version, xml_encoding, schema_version, vendor, library,
@@ -49,7 +49,7 @@ def temp_db_file(tmp_path):
         'Test description',
         '2025-04-05T12:00:00'
     ))
-    
+
     conn.commit()
     conn.close()
     return db_file
@@ -94,6 +94,7 @@ def test_validate_input_file_wrong_extension(tmp_path):
 def test_get_output_path_with_output(temp_db_file, tmp_path):
     """Test output path when output is provided."""
     output_file = tmp_path / "custom.xml"
+
     class Args:
         def __init__(self, input_path, output_path):
             self.input = input_path
@@ -129,7 +130,7 @@ def test_create_xml_tree(temp_db_file):
     """Test XML tree creation with header information."""
     header_info = fetch_header_info(str(temp_db_file))
     root = create_xml_tree(header_info)
-    
+
     assert root.tag.endswith('component')
     assert root.find('.//{*}vendor').text == 'example.com'
     assert root.find('.//{*}library').text == 'test_lib'
@@ -142,9 +143,9 @@ def test_write_xml_file(temp_db_file, tmp_path):
     header_info = fetch_header_info(str(temp_db_file))
     root = create_xml_tree(header_info)
     output_path = tmp_path / "output.xml"
-    
+
     write_xml_file(root, header_info, output_path)
-    
+
     with open(output_path, 'r', encoding='utf-8') as f:
         content = f.read()
         assert '<?xml version="1.0" encoding="UTF-8"?>' in content

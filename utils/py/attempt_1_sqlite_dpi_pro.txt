@@ -1,0 +1,172 @@
+import sqlite3
+
+def fetch_all_rows(db_path, table_name):
+    """
+    Fetches all rows from a specified table in the SQLite database.
+
+    Args:
+        db_path (str): Path to the SQLite database file.
+        table_name (str): Name of the table to fetch rows from.
+    """
+    try:
+        connection = sqlite3.connect(db_path)
+        cursor = connection.cursor()
+
+        query = f"SELECT * FROM {table_name};"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+
+        print(f"All rows from table '{table_name}':")
+        for row in rows:
+            print(row)
+
+    except sqlite3.Error as e:
+        print(f"Error fetching rows: {e}")
+    finally:
+        if 'connection' in locals():
+            connection.close()
+
+
+def fetch_specific_columns(db_path, table_name, columns):
+    """
+    Fetches specific columns from a specified table in the SQLite database.
+
+    Args:
+        db_path (str): Path to the SQLite database file.
+        table_name (str): Name of the table to fetch data from.
+        columns (list): List of column names to fetch.
+    """
+    try:
+        connection = sqlite3.connect(db_path)
+        cursor = connection.cursor()
+
+        columns_str = ", ".join(columns)
+        query = f"SELECT {columns_str} FROM {table_name};"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+
+        print(f"Specific columns ({columns_str}) from table '{table_name}':")
+        for row in rows:
+            print(row)
+
+    except sqlite3.Error as e:
+        print(f"Error fetching specific columns: {e}")
+    finally:
+        if 'connection' in locals():
+            connection.close()
+
+
+def execute_aggregate_query(db_path, table_name, aggregate_function, column_name):
+    """
+    Executes an aggregate query (e.g., COUNT, SUM, AVG) on a specified column in a table.
+
+    Args:
+        db_path (str): Path to the SQLite database file.
+        table_name (str): Name of the table to query.
+        aggregate_function (str): Aggregate function to apply (e.g., COUNT, SUM, AVG).
+        column_name (str): Name of the column to apply the aggregate function on.
+    """
+    try:
+        connection = sqlite3.connect(db_path)
+        cursor = connection.cursor()
+
+        query = f"SELECT {aggregate_function}({column_name}) FROM {table_name};"
+        cursor.execute(query)
+        result = cursor.fetchone()
+
+        print(f"{aggregate_function} of column '{column_name}' in table '{table_name}': {result[0]}")
+
+    except sqlite3.Error as e:
+        print(f"Error executing aggregate query: {e}")
+    finally:
+        if 'connection' in locals():
+            connection.close()
+
+
+def fetch_row_by_id(db_path, table_name, row_id):
+    """
+    Fetches all columns from a specific row in the SQLite database by row ID.
+
+    Args:
+        db_path (str): Path to the SQLite database file.
+        table_name (str): Name of the table to fetch data from.
+        row_id (int): ID of the row to fetch.
+    """
+    try:
+        connection = sqlite3.connect(db_path)
+        cursor = connection.cursor()
+
+        query = f"SELECT * FROM {table_name} WHERE id = ?;"
+        cursor.execute(query, (row_id,))
+        row = cursor.fetchone()
+
+        if row:
+            print(f"Row with ID {row_id} from table '{table_name}': {row}")
+        else:
+            print(f"No row found with ID {row_id} in table '{table_name}'.")
+
+    except sqlite3.Error as e:
+        print(f"Error fetching row by ID: {e}")
+    finally:
+        if 'connection' in locals():
+            connection.close()
+
+
+def fetch_row_by_condition(db_path, table_name, condition):
+    """
+    Fetches all columns from a specific row in the SQLite database based on a condition.
+
+    Args:
+        db_path (str): Path to the SQLite database file.
+        table_name (str): Name of the table to fetch data from.
+        condition (str): SQL condition to filter the row (e.g., "column_name = 'value'").
+    """
+    try:
+        connection = sqlite3.connect(db_path)
+        cursor = connection.cursor()
+
+        query = f"SELECT * FROM {table_name} WHERE {condition};"
+        cursor.execute(query)
+        row = cursor.fetchone()
+
+        if row:
+            print(f"Row matching condition '{condition}' from table '{table_name}': {row}")
+        else:
+            print(f"No row found matching condition '{condition}' in table '{table_name}'.")
+
+    except sqlite3.Error as e:
+        print(f"Error fetching row by condition: {e}")
+    finally:
+        if 'connection' in locals():
+            connection.close()
+
+
+def fetch_all_rows_with_conditions(db_path, table_name, condition):
+    """
+    Fetches all rows that match a specific condition in the SQLite database.
+
+    Args:
+        db_path (str): Path to the SQLite database file.
+        table_name (str): Name of the table to fetch data from.
+        condition (str): SQL condition to filter rows (e.g., "column_name > 10").
+    """
+    try:
+        connection = sqlite3.connect(db_path)
+        cursor = connection.cursor()
+
+        query = f"SELECT * FROM {table_name} WHERE {condition};"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+
+        if rows:
+            print(f"Rows matching condition '{condition}' from table '{table_name}':")
+            for row in rows:
+                print(row)
+        else:
+            print(f"No rows found matching condition '{condition}' in table '{table_name}'.")
+
+    except sqlite3.Error as e:
+        print(f"Error fetching rows with condition: {e}")
+    finally:
+        if 'connection' in locals():
+            connection.close()

@@ -37,12 +37,12 @@ def validate_input_file(file_path):
 def get_database_path(args):
     input_file = Path(args.input)
     db_path = Path(args.database)
-    
+
     # If database argument is just a directory, use input filename
     if db_path.is_dir():
         db_name = input_file.stem + '.db'
         db_path = db_path / db_name
-    
+
     return db_path
 
 def get_xml_version(xml_file: str) -> Dict[str, str]:
@@ -50,14 +50,14 @@ def get_xml_version(xml_file: str) -> Dict[str, str]:
     try:
         with open(xml_file, 'r', encoding='utf-8') as f:
             first_line = f.readline().strip()
-        
+
         if first_line.startswith('<?xml'):
             version = first_line.split('version="')[1].split('"')[0]
             encoding = first_line.split('encoding="')[1].split('"')[0]
         else:
             version = "1.0"
             encoding = "UTF-8"
-            
+
         return {
             'version': version,
             'encoding': encoding
@@ -118,38 +118,38 @@ def parse_ipxact_header(xml_file: str) -> Dict[str, str]:
     """Parse IP-XACT header information from XML file."""
     try:
         xml_info = get_xml_version(xml_file)
-        
+
         tree = ET.parse(xml_file)
         root = tree.getroot()
-        
+
         # Extract namespace from root tag and verify it's an IP-XACT component
         if not root.tag.endswith('}component'):
             raise ValueError("Root element is not an IP-XACT component")
-            
+
         ns = {'ipxact': root.tag.split('}')[0].strip('{')}
-        
+
         # Define supported namespaces for future options
         supported_namespaces = [
             "http://www.accellera.org/XMLSchema/IPXACT/1685-2014",
-            #"http://www.accellera.org/XMLSchema/IPXACT/1685-2021"  # Example future namespace
+            # "http://www.accellera.org/XMLSchema/IPXACT/1685-2021"  # Example future namespace
         ]
-        
+
         # Check if the namespace matches any of the supported namespaces
         if ns['ipxact'] not in supported_namespaces:
             print(f"\nError: Unsupported IP-XACT namespace: {ns['ipxact']}. Supported namespaces are: {', '.join(supported_namespaces)}.")
             sys.exit(1)
-        
+
         # Debug output
         print(f"\nDebug: XML Structure:")
         print(f"Root tag: {root.tag}")
         print(f"Namespace: {ns['ipxact']}")
         print(f"Available child elements: {[child.tag for child in root]}")
-        
+
         # Helper function to safely get element text
         def get_element_text(element_path: str) -> str:
             element = root.find(element_path, ns)
             return element.text.strip() if element is not None and element.text is not None else ''
-        
+
         # Get component information directly from root since it is the component
         header = {
             'xml_version': xml_info['version'],
@@ -162,20 +162,20 @@ def parse_ipxact_header(xml_file: str) -> Dict[str, str]:
             'description': get_element_text('./ipxact:description'),
             'created_date': datetime.now().isoformat()
         }
-        
+
         # Debug output
         print("\nDebug: IP-XACT Component Information:")
         print(f"Vendor: {header['vendor']}")
         print(f"Library: {header['library']}")
         print(f"Name: {header['name']}")
         print(f"Version: {header['version']}")
-        
+
         # Validate required fields
         if not header['vendor'] or not header['library'] or not header['name']:
             raise ValueError("Missing required IP-XACT header fields (vendor, library, or name)")
-            
+
         return header
-        
+
     except ET.ParseError as e:
         raise ValueError(f"Invalid XML file: {e}")
     except Exception as e:
@@ -236,39 +236,39 @@ def parse_register_info(xml_file: str) -> list:
     try:
         tree = ET.parse(xml_file)
         root = tree.getroot()
-        
+
         ns = {'ipxact': root.tag.split('}')[0].strip('{')}
         registers_info = []
 
         # Debug namespace and structure
         print(f"\nDebug: Using namespace - {ns['ipxact']}")
-        
+
         # Find memory maps directly under component
         memory_maps = root.find('.//ipxact:memoryMaps', ns)
         if memory_maps is None:
             print("Warning: No memoryMaps element found")
             return []
-            
+
         for memory_map in memory_maps.findall('ipxact:memoryMap', ns):
             memory_map_name = safe_get_text(memory_map, 'ipxact:name', ns, 'unnamed_map')
-            memory_map_description = safe_get_text(memory_map, 'ipxact:description', ns, 'N/A')
-            
+            # memory_map_description = safe_get_text(memory_map, 'ipxact:description', ns, 'N/A')
+
             # Find address blocks directly under memory map
             for block in memory_map.findall('ipxact:addressBlock', ns):
                 block_name = safe_get_text(block, 'ipxact:name', ns, 'unnamed_block')
-                block_base = safe_get_text(block, 'ipxact:baseAddress', ns, 'N/A')
-                block_range = safe_get_text(block, 'ipxact:range', ns, 'N/A')
-                block_width = safe_get_text(block, 'ipxact:width', ns, 'N/A')
-                block_usage = safe_get_text(block, 'ipxact:usage', ns, 'N/A')
-                
+                # block_base = safe_get_text(block, 'ipxact:baseAddress', ns, 'N/A')
+                # block_range = safe_get_text(block, 'ipxact:range', ns, 'N/A')
+                # block_width = safe_get_text(block, 'ipxact:width', ns, 'N/A')
+                #block_usage = safe_get_text(block, 'ipxact:usage', ns, 'N/A')
+
                 # Find registers directly under address block
                 for register in block.findall('ipxact:register', ns):
                     reg_name = safe_get_text(register, 'ipxact:name', ns, 'unnamed_register')
                     reg_description = safe_get_text(register, 'ipxact:description', ns, 'N/A')
                     reg_read_action = safe_get_text(register, 'ipxact:readAction', ns, 'N/A')  # Extract readAction
-                    
+
                     print(f"Debug: Found register - {reg_name} (Description: {reg_description}, ReadAction: {reg_read_action})")
-                    
+
                     # Process fields
                     fields_elem = register.find('ipxact:fields', ns)
                     fields = []
@@ -276,7 +276,7 @@ def parse_register_info(xml_file: str) -> list:
                         for field in fields_elem.findall('ipxact:field', ns):
                             field_info = parse_field_info(field, ns)
                             fields.append(field_info)
-                    
+
                     register_info = {
                         'memory_map_name': memory_map_name,
                         'memory_map_description': safe_get_text(memory_map, 'ipxact:description', ns, 'N/A'),
@@ -298,7 +298,7 @@ def parse_register_info(xml_file: str) -> list:
                         'created_date': datetime.now().isoformat()
                     }
                     registers_info.append(register_info)
-        
+
         return registers_info
     except ET.ParseError as e:
         raise ValueError(f"Invalid XML file: {e}")
@@ -311,34 +311,34 @@ def create_database(db_path: Path, header_info: Dict[str, str], registers_info: 
         db_exists = db_path.exists()
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        
+
         create_header_table(cursor)
         create_register_table(cursor)
-        
+
         # Add current timestamp for new records
         header_info['created_date'] = datetime.now().isoformat()
-        
+
         # Handle header information
         if db_exists:
             print(f"\nWARNING: Database '{db_path}' already exists! Checking for duplicate records...")
-            
+
             # Get complete existing record info for comparison
             cursor.execute('''
-                SELECT xml_version, xml_encoding, schema_version, vendor, library, name, version, description, created_date 
-                FROM ipxact_header 
+                SELECT xml_version, xml_encoding, schema_version, vendor, library, name, version, description, created_date
+                FROM ipxact_header
                 WHERE vendor = ? AND library = ? AND name = ? AND version = ?
-            ''', (header_info['vendor'], header_info['library'], 
+            ''', (header_info['vendor'], header_info['library'],
                   header_info['name'], header_info['version']))
             existing = cursor.fetchone()
-            
+
             if existing:
                 print(f"\nSkipping: Found existing record - XML v{existing[0]}({existing[1]}), Schema: {existing[2]}, Vendor: {existing[3]}, Lib: {existing[4]}, Name: {existing[5]}, Ver: {existing[6]}, Desc: {existing[7]}, Created: {existing[8]}")
             else:
                 print(f"\nInserting: New record - XML v{header_info['xml_version']}({header_info['xml_encoding']}), Schema: {header_info['schema_version']}, Vendor: {header_info['vendor']}, Lib: {header_info['library']}, Name: {header_info['name']}, Ver: {header_info['version']}, Desc: {header_info['description']}, Created: {header_info['created_date']}")
-                
+
                 cursor.execute('''
                     INSERT INTO ipxact_header (
-                        xml_version, xml_encoding, schema_version, vendor, library, 
+                        xml_version, xml_encoding, schema_version, vendor, library,
                         name, version, description, created_date
                     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ''', (
@@ -357,7 +357,7 @@ def create_database(db_path: Path, header_info: Dict[str, str], registers_info: 
             print(f"\nCreating new database: {db_path}")
             cursor.execute('''
                 INSERT INTO ipxact_header (
-                    xml_version, xml_encoding, schema_version, vendor, library, 
+                    xml_version, xml_encoding, schema_version, vendor, library,
                     name, version, description, created_date
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', (
@@ -371,21 +371,21 @@ def create_database(db_path: Path, header_info: Dict[str, str], registers_info: 
                 header_info['description'],
                 header_info['created_date']
             ))
-        
+
         # Handle registers information
         print(f"\nProcessing {len(registers_info)} registers...")
         registers_added = 0
-        
+
         for register in registers_info:
             cursor.execute('''
-                SELECT COUNT(*) FROM registers 
-                WHERE memory_map_name = ? 
-                AND block_name = ? 
-                AND register_name = ? 
+                SELECT COUNT(*) FROM registers
+                WHERE memory_map_name = ?
+                AND block_name = ?
+                AND register_name = ?
                 AND register_offset = ?
             ''', (register['memory_map_name'], register['block_name'],
-                 register['register_name'], register['register_offset']))
-            
+                  register['register_name'], register['register_offset']))
+
             if cursor.fetchone()[0] == 0:
                 cursor.execute('''
                     INSERT INTO registers (
@@ -417,11 +417,11 @@ def create_database(db_path: Path, header_info: Dict[str, str], registers_info: 
                 ))
                 registers_added += 1
                 print(f"Added register: {register['memory_map_name']}/{register['block_name']}/{register['register_name']} @ {register['register_offset']}")
-        
+
         conn.commit()
         print(f"\nAdded {registers_added} new registers to database")
         return conn
-        
+
     except sqlite3.Error as e:
         raise Exception(f"Database error: {e}")
 
@@ -429,29 +429,29 @@ def record_exists(cursor: sqlite3.Cursor, table: str, record: Dict[str, str]) ->
     """Check if a record with the same key fields exists in the table, ignoring created_date."""
     if table == 'ipxact_header':
         cursor.execute('''
-            SELECT COUNT(*) FROM ipxact_header 
-            WHERE vendor = ? 
-            AND library = ? 
-            AND name = ? 
+            SELECT COUNT(*) FROM ipxact_header
+            WHERE vendor = ?
+            AND library = ?
+            AND name = ?
             AND version = ?
             AND xml_version = ?
             AND xml_encoding = ?
             AND schema_version = ?
             AND description = ?
-        ''', (record['vendor'], record['library'], 
+        ''', (record['vendor'], record['library'],
               record['name'], record['version'],
               record['xml_version'], record['xml_encoding'],
               record['schema_version'], record['description']))
     else:  # registers table
         cursor.execute('''
-            SELECT COUNT(*) FROM registers 
-            WHERE memory_map_name = ? 
-            AND block_name = ? 
-            AND register_name = ? 
+            SELECT COUNT(*) FROM registers
+            WHERE memory_map_name = ?
+            AND block_name = ?
+            AND register_name = ?
             AND register_offset = ?
-        ''', (record['memory_map_name'], record['block_name'], 
+        ''', (record['memory_map_name'], record['block_name'],
               record['register_name'], record['register_offset']))
-    
+
     return cursor.fetchone()[0] > 0
 
 def main():
@@ -469,7 +469,7 @@ def main():
         header_info = parse_ipxact_header(args.input)
         registers_info = parse_register_info(args.input)
         conn = create_database(db_path, header_info, registers_info)
-        
+
         print(f"\nSuccessfully processed {len(registers_info)} registers")
         conn.close()
 

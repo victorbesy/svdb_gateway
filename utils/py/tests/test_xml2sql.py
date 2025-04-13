@@ -1,10 +1,10 @@
 import pytest
 import sqlite3
 import os
-from pathlib import Path
+# from pathlib import Path
 from xml2sql import (
-    setup_argument_parser, 
-    validate_input_file, 
+    setup_argument_parser,
+    validate_input_file,
     get_database_path,
     get_xml_version,
     parse_ipxact_header,
@@ -82,6 +82,7 @@ def test_get_database_path_directory(temp_xml_file, tmp_path):
 def test_get_database_path_full_path(temp_xml_file, tmp_path):
     """Test database path when full path is provided."""
     db_file = tmp_path / "custom.db"
+
     class Args:
         def __init__(self, input_path, db_path):
             self.input = input_path
@@ -114,16 +115,16 @@ def test_create_database(temp_xml_file, tmp_path):
     header = parse_ipxact_header(str(temp_xml_file))
     # Add schema_version to header dictionary
     header['schema_version'] = 'http://www.accellera.org/XMLSchema/IPXACT/1685-2014'
-    
+
     # Create empty registers_info list since this test only checks header information
     registers_info = []
-    
+
     conn = create_database(db_path, header, registers_info)
-    
+
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM ipxact_header')
     row = cursor.fetchone()
-    
+
     # Verify all header fields
     assert row[1] == '1.0'  # xml_version
     assert row[2] == 'UTF-8'  # xml_encoding
@@ -133,14 +134,14 @@ def test_create_database(temp_xml_file, tmp_path):
     assert row[6] == 'test_component'  # name
     assert row[7] == '1.0'  # version
     assert row[8] == 'Test description'  # description
-    
+
     cursor.execute('PRAGMA table_info(ipxact_header)')
     columns = cursor.fetchall()
-    expected_columns = ['id', 'xml_version', 'xml_encoding', 'schema_version', 
-                       'vendor', 'library', 'name', 'version', 'description']
+    expected_columns = ['id', 'xml_version', 'xml_encoding', 'schema_version',
+                        'vendor', 'library', 'name', 'version', 'description']
     actual_columns = [col[1] for col in columns]
     assert all(col in actual_columns for col in expected_columns)
-    
+
     conn.close()
 
 class TestXml2Sql(unittest.TestCase):
@@ -150,7 +151,7 @@ class TestXml2Sql(unittest.TestCase):
         self.conn = sqlite3.connect(self.test_db)
         self.cursor = self.conn.cursor()
         create_register_table(self.cursor)
-        
+
     def tearDown(self):
         """Clean up test database"""
         self.conn.close()
@@ -180,11 +181,11 @@ class TestXml2Sql(unittest.TestCase):
         """
         with open("/tmp/test.xml", "w") as f:
             f.write(test_xml)
-        
+
         registers = parse_register_info("/tmp/test.xml")
         self.assertEqual(len(registers), 1)
         reg = registers[0]
-        
+
         # Verify readAction attribute is correctly parsed
         self.assertEqual(reg['register_read_action'], 'clear')
         self.assertEqual(reg['register_name'], 'TestReg')
@@ -218,16 +219,16 @@ class TestXml2Sql(unittest.TestCase):
         """
         with open("/tmp/test.xml", "w") as f:
             f.write(test_xml)
-        
+
         registers = parse_register_info("/tmp/test.xml")
         self.assertEqual(len(registers), 1)
         reg = registers[0]
-        
+
         # Verify field readAction is stored in elements list
         fields = json.loads(reg['register_fields'])
         self.assertEqual(len(fields), 1)
         field = fields[0]
-        
+
         # Check if readAction is in the elements list
         read_action_element = next(
             (elem for elem in field['elements'] if elem['type'] == 'readAction'),
@@ -257,11 +258,11 @@ class TestXml2Sql(unittest.TestCase):
         """
         with open("/tmp/test.xml", "w") as f:
             f.write(test_xml)
-        
+
         registers = parse_register_info("/tmp/test.xml")
         self.assertEqual(len(registers), 1)
         reg = registers[0]
-        
+
         # Verify default value for readAction
         self.assertEqual(reg['register_read_action'], 'N/A')
 
@@ -314,12 +315,12 @@ class TestXml2Sql(unittest.TestCase):
         """
         with open("/tmp/test.xml", "w") as f:
             f.write(test_xml)
-        
+
         # Parse registers and insert into database
         registers = parse_register_info("/tmp/test.xml")
         self.assertEqual(len(registers), 1)
         reg = registers[0]
-        
+
         # Verify all register fields
         self.assertEqual(reg['memory_map_name'], 'TestMap')
         self.assertEqual(reg['memory_map_description'], 'Test Memory Map')
@@ -337,26 +338,26 @@ class TestXml2Sql(unittest.TestCase):
         self.assertEqual(reg['register_reset_mask'], '0xFFFF')
         self.assertEqual(reg['register_read_action'], 'clear')
         self.assertEqual(reg['hdl_path'], 'top.test.register')
-        
+
         # Verify fields JSON structure
         fields = json.loads(reg['register_fields'])
         self.assertEqual(len(fields), 1)
         field = fields[0]
-        
+
         # Verify field attributes
         self.assertEqual(field['name'], 'TestField')
         self.assertEqual(field['description'], 'Test Field Description')
         self.assertEqual(field['bit_offset'], '0')
         self.assertEqual(field['bit_width'], '16')
         self.assertEqual(field['access'], 'read-write')
-        
+
         # Verify field elements
         elements = field['elements']
-        self.assertTrue(any(elem['type'] == 'readAction' and elem['value'] == 'clear' 
-                          for elem in elements))
-        self.assertTrue(any(elem['type'] == 'reset' and elem['value'] == '0xF' 
-                          for elem in elements))
-        
+        self.assertTrue(any(elem['type'] == 'readAction' and elem['value'] == 'clear'
+                            for elem in elements))
+        self.assertTrue(any(elem['type'] == 'reset' and elem['value'] == '0xF'
+                            for elem in elements))
+
         # Verify created_date is present and in ISO format
         self.assertTrue('created_date' in reg)
         try:
@@ -478,19 +479,19 @@ class TestXml2Sql(unittest.TestCase):
         """
         with open("/tmp/test.xml", "w") as f:
             f.write(test_xml)
-        
+
         registers = parse_register_info("/tmp/test.xml")
         self.assertEqual(len(registers), 1)
         reg = registers[0]
-        
+
         # Verify register info
         self.assertEqual(reg['register_name'], 'MultiFieldReg')
         self.assertEqual(reg['register_size'], '32')
-        
+
         # Verify fields
         fields = json.loads(reg['register_fields'])
         self.assertEqual(len(fields), 13)  # Check total number of fields
-        
+
         # Verify specific fields
         field_tests = [
             ('field0', 0, 1, 'read-write', None),
@@ -507,27 +508,27 @@ class TestXml2Sql(unittest.TestCase):
             ('field11', 26, 3, None, 'modify'),
             ('field12', 29, 3, None, None, None, '0x7')
         ]
-        
+
         for field_data in field_tests:
             name, offset, width, access, read_action, *extra = field_data + (None, None)
             field = next(f for f in fields if f['name'] == name)
-            
+
             self.assertEqual(field['bit_offset'], str(offset))
             self.assertEqual(field['bit_width'], str(width))
             if access:
                 self.assertEqual(field['access'], access)
-                
+
             # Check for special attributes in elements
             elements = field.get('elements', [])
             if read_action:
-                self.assertTrue(any(e['type'] == 'readAction' and e['value'] == read_action 
-                                  for e in elements))
+                self.assertTrue(any(e['type'] == 'readAction' and e['value'] == read_action
+                                    for e in elements))
             if extra and extra[0]:  # modifiedWriteValue
-                self.assertTrue(any(e['type'] == 'modifiedWriteValue' and e['value'] == extra[0] 
-                                  for e in elements))
+                self.assertTrue(any(e['type'] == 'modifiedWriteValue' and e['value'] == extra[0]
+                                    for e in elements))
             if extra and extra[1]:  # reset value
-                self.assertTrue(any(e['type'] == 'reset' and e['value'] == extra[1] 
-                                  for e in elements))
+                self.assertTrue(any(e['type'] == 'reset' and e['value'] == extra[1]
+                                    for e in elements))
 
     def test_register_without_fields(self):
         """Test parsing of register that has no fields"""
@@ -550,15 +551,15 @@ class TestXml2Sql(unittest.TestCase):
         """
         with open("/tmp/test.xml", "w") as f:
             f.write(test_xml)
-        
+
         registers = parse_register_info("/tmp/test.xml")
         self.assertEqual(len(registers), 1)
         reg = registers[0]
-        
+
         # Verify mandatory fields
         self.assertEqual(reg['register_name'], 'NoFieldsReg')
         self.assertEqual(reg['register_offset'], '0x0')
-        
+
         # Verify all optional fields default to 'N/A'
         expected_na_fields = {
             'memory_map_description': 'N/A',
@@ -575,16 +576,16 @@ class TestXml2Sql(unittest.TestCase):
             'hdl_path': 'N/A',
             'register_read_action': 'N/A'
         }
-        
+
         # Check each optional field
         for field, expected_value in expected_na_fields.items():
-            self.assertEqual(reg[field], expected_value, 
-                           f"Field '{field}' should be 'N/A' when missing")
-        
+            self.assertEqual(reg[field], expected_value,
+                             f"Field '{field}' should be 'N/A' when missing")
+
         # Verify required fields from parent elements
         self.assertEqual(reg['memory_map_name'], 'TestMap')
         self.assertEqual(reg['block_name'], 'TestBlock')
-        
+
         # Verify created_date is present and valid
         self.assertTrue('created_date' in reg)
         try:
@@ -613,17 +614,17 @@ class TestXml2Sql(unittest.TestCase):
         """
         with open("/tmp/test.xml", "w") as f:
             f.write(test_xml)
-        
+
         registers = parse_register_info("/tmp/test.xml")
         self.assertEqual(len(registers), 1)
-        
+
         # Test register with minimal attributes
         reg = registers[0]
-        
+
         # Verify mandatory fields
         self.assertEqual(reg['register_name'], 'MinimalReg')
         self.assertEqual(reg['register_offset'], '0x4')
-        
+
         # Verify all optional fields default to 'N/A'
         expected_na_fields = {
             'memory_map_description': 'N/A',
@@ -640,16 +641,16 @@ class TestXml2Sql(unittest.TestCase):
             'hdl_path': 'N/A',
             'register_read_action': 'N/A'
         }
-        
+
         # Check each optional field
         for field, expected_value in expected_na_fields.items():
-            self.assertEqual(reg[field], expected_value, 
-                           f"Field '{field}' should be 'N/A' when missing")
-        
+            self.assertEqual(reg[field], expected_value,
+                             f"Field '{field}' should be 'N/A' when missing")
+
         # Verify required fields are present
         self.assertEqual(reg['memory_map_name'], 'TestMap')
         self.assertEqual(reg['block_name'], 'TestBlock')
-        
+
         # Verify created_date is present and valid
         self.assertTrue('created_date' in reg)
         try:

@@ -8,7 +8,7 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
 import json
-from typing import Dict, Tuple
+from typing import Dict
 
 def setup_argument_parser():
     parser = argparse.ArgumentParser(
@@ -45,13 +45,13 @@ def fetch_header_info(db_path: str) -> Dict[str, str]:
     try:
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        
+
         cursor.execute('SELECT * FROM ipxact_header ORDER BY id DESC LIMIT 1')
         row = cursor.fetchone()
-        
+
         if not row:
             raise ValueError("No header information found in database")
-        
+
         header = {
             'xml_version': row[1],
             'xml_encoding': row[2],
@@ -63,7 +63,7 @@ def fetch_header_info(db_path: str) -> Dict[str, str]:
             'description': row[8],
             'created_date': row[9]
         }
-        
+
         conn.close()
         return header
     except sqlite3.Error as e:
@@ -74,7 +74,7 @@ def fetch_register_info(db_path: str) -> list:
     try:
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        
+
         cursor.execute('''
             SELECT memory_map_name, memory_map_description,
                    block_name, block_base_address, block_range, block_width, block_usage,
@@ -85,11 +85,11 @@ def fetch_register_info(db_path: str) -> list:
             ORDER BY register_offset
         ''')
         rows = cursor.fetchall()
-        
+
         if not rows:
             print("Warning: No register information found in database")
             return []
-        
+
         registers = []
         for row in rows:
             register = {
@@ -112,7 +112,7 @@ def fetch_register_info(db_path: str) -> list:
                 'register_read_action': row[16]
             }
             registers.append(register)
-        
+
         conn.close()
         return registers
     except sqlite3.Error as e:
@@ -124,30 +124,30 @@ def create_xml_tree(header_info: Dict[str, str], registers_info: list) -> ET.Ele
     ns = header_info['schema_version']
     ET.register_namespace('ipxact', ns)
     root = ET.Element(f'{{{ns}}}component')
-    
+
     # Add header elements
     vendor = ET.SubElement(root, f'{{{ns}}}vendor')
     vendor.text = header_info['vendor']
-    
+
     library = ET.SubElement(root, f'{{{ns}}}library')
     library.text = header_info['library']
-    
+
     name = ET.SubElement(root, f'{{{ns}}}name')
     name.text = header_info['name']
-    
+
     version = ET.SubElement(root, f'{{{ns}}}version')
     version.text = header_info['version']
-    
+
     if header_info['description']:
         description = ET.SubElement(root, f'{{{ns}}}description')
         description.text = header_info['description']
-    
+
     # Add memory maps section
     if registers_info:
         memory_maps = ET.SubElement(root, f'{{{ns}}}memoryMaps')
         current_map = None
         current_block = None
-        
+
         for reg in registers_info:
             # Create memory map if it's new
             if current_map is None or current_map.find(f'{{{ns}}}name').text != reg['memory_map_name']:
@@ -158,7 +158,7 @@ def create_xml_tree(header_info: Dict[str, str], registers_info: list) -> ET.Ele
                     map_desc = ET.SubElement(current_map, f'{{{ns}}}description')
                     map_desc.text = reg['memory_map_description']
                 current_block = None
-            
+
             # Create address block if it's new
             if current_block is None or current_block.find(f'{{{ns}}}name').text != reg['block_name']:
                 current_block = ET.SubElement(current_map, f'{{{ns}}}addressBlock')
@@ -172,31 +172,31 @@ def create_xml_tree(header_info: Dict[str, str], registers_info: list) -> ET.Ele
                 width.text = str(reg['block_width'])
                 usage = ET.SubElement(current_block, f'{{{ns}}}usage')
                 usage.text = reg['block_usage']
-            
+
             # Create register
             register = ET.SubElement(current_block, f'{{{ns}}}register')
             reg_name = ET.SubElement(register, f'{{{ns}}}name')
             reg_name.text = reg['register_name']
-            
+
             if reg['register_description']:
                 reg_desc = ET.SubElement(register, f'{{{ns}}}description')
                 reg_desc.text = reg['register_description']
-            
+
             reg_offset = ET.SubElement(register, f'{{{ns}}}addressOffset')
             reg_offset.text = reg['register_offset']
-            
+
             reg_size = ET.SubElement(register, f'{{{ns}}}size')
             reg_size.text = str(reg['register_size'])
-            
+
             if reg['register_access']:
                 reg_access = ET.SubElement(register, f'{{{ns}}}access')
                 reg_access.text = reg['register_access']
-            
+
             # Add readAction before reset block if present
             if reg.get('register_read_action') and reg['register_read_action'] != 'N/A':
                 read_action = ET.SubElement(register, f'{{{ns}}}readAction')
                 read_action.text = reg['register_read_action']
-            
+
             # Add reset value and mask if present
             if reg['register_reset_value'] or reg['register_reset_mask']:
                 reset = ET.SubElement(register, f'{{{ns}}}reset')
@@ -206,7 +206,7 @@ def create_xml_tree(header_info: Dict[str, str], registers_info: list) -> ET.Ele
                 if reg['register_reset_mask']:
                     reset_mask = ET.SubElement(reset, f'{{{ns}}}mask')
                     reset_mask.text = reg['register_reset_mask']
-            
+
             # Add fields section if present
             if reg['register_fields'] and reg['register_fields'] != 'null':
                 try:
@@ -215,29 +215,29 @@ def create_xml_tree(header_info: Dict[str, str], registers_info: list) -> ET.Ele
                         fields_elem = ET.SubElement(register, f'{{{ns}}}fields')
                         for field_info in fields_data:
                             field = ET.SubElement(fields_elem, f'{{{ns}}}field')
-                            
+
                             # Add field name
                             field_name = ET.SubElement(field, f'{{{ns}}}name')
                             field_name.text = field_info.get('name', 'unnamed_field')
-                            
+
                             # Add field description if present
                             if field_info.get('description'):
                                 field_desc = ET.SubElement(field, f'{{{ns}}}description')
                                 field_desc.text = field_info['description']
-                            
+
                             # Add bit offset
                             bit_offset = ET.SubElement(field, f'{{{ns}}}bitOffset')
                             bit_offset.text = field_info.get('bit_offset', '0')
-                            
+
                             # Add bit width
                             bit_width = ET.SubElement(field, f'{{{ns}}}bitWidth')
                             bit_width.text = field_info.get('bit_width', '1')
-                            
+
                             # Add access if present
                             if field_info.get('access'):
                                 access = ET.SubElement(field, f'{{{ns}}}access')
                                 access.text = field_info['access']
-                            
+
                             # Add all child elements in the same order as stored in the database
                             for element in field_info.get('elements', []):
                                 # Skip elements that have already been added explicitly
@@ -266,40 +266,40 @@ def create_xml_tree(header_info: Dict[str, str], registers_info: list) -> ET.Ele
                     print(f"Warning: Failed to parse fields JSON for register {reg['register_name']}: {e}")
                 except Exception as e:
                     print(f"Warning: Error processing fields for register {reg['register_name']}: {e}")
-            
+
             # Add HDL path if present (moved to end of register definition)
             if reg['hdl_path'] and reg['hdl_path'] != 'N/A':
                 vendor_extensions = ET.SubElement(register, f'{{{ns}}}vendorExtensions')
                 hdl_path = ET.SubElement(vendor_extensions, f'{{{ns}}}hdlPath')
                 hdl_path.text = reg['hdl_path']
-    
+
     return root
 
 def write_xml_file(root: ET.Element, header_info: Dict[str, str], output_path: Path):
     """Write XML tree to file with proper formatting."""
     # Register namespace
     ET.register_namespace('ipxact', header_info['schema_version'])
-    
+
     # Convert to string with initial formatting
     xml_str = ET.tostring(root, encoding='unicode')
-    
+
     # Use minidom for pretty printing
     dom = minidom.parseString(xml_str)
     pretty_xml = dom.toprettyxml(indent='    ')
-    
+
     # Remove the XML declaration that minidom adds
     pretty_xml = '\n'.join(line for line in pretty_xml.split('\n') if not line.startswith('<?xml'))
-    
+
     # Add our own XML declaration with proper encoding
     xml_declaration = f'<?xml version="{header_info["xml_version"]}" encoding="{header_info["xml_encoding"]}"?>\n'
-    
+
     # Add extra newlines after specific sections
     pretty_xml = pretty_xml.replace('</ipxact:version>\n', '</ipxact:version>\n\n')
     pretty_xml = pretty_xml.replace('</ipxact:description>\n', '</ipxact:description>\n\n')
     pretty_xml = pretty_xml.replace('</ipxact:register>\n', '</ipxact:register>\n\n')
     pretty_xml = pretty_xml.replace('</ipxact:addressBlock>\n', '</ipxact:addressBlock>\n\n')
     pretty_xml = pretty_xml.replace('</ipxact:memoryMap>\n', '</ipxact:memoryMap>\n\n')
-    
+
     # Write to file
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(xml_declaration)
@@ -321,16 +321,16 @@ def main():
 
         # Fetch header information from database
         header_info = fetch_header_info(args.input)
-        
+
         # Fetch register information from database
         registers_info = fetch_register_info(args.input)
-        
+
         # Create XML tree
         root = create_xml_tree(header_info, registers_info)
-        
+
         # Write formatted XML to file with proper XML declaration
         write_xml_file(root, header_info, output_path)
-        
+
         print(f"Successfully created XML file with {len(registers_info)} registers: {output_path}")
 
     except FileNotFoundError as e:

@@ -1,0 +1,514 @@
+Starting IP-XACT batch conversion process...
+Source directory: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/xml
+Output directory: /home/v/TEMP
+----------------------------------------
+
+
+Processing: abstractionDefinition.xml
+Starting IP-XACT conversion process...
+Input XML:  abstractionDefinition.xml
+Database:   abstractionDefinition.db
+Output XML: abstractionDefinition_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/abstractionDefinition.xml
+SQLite DB:   /home/v/TEMP/abstractionDefinition.db
+New XML:     /home/v/TEMP/abstractionDefinition_restored.xml
+[0;32m[SUCCESS][0m Processed abstractionDefinition.xml
+
+Processing: abstractionDefinition_example.xml
+Starting IP-XACT conversion process...
+Input XML:  abstractionDefinition_example.xml
+Database:   abstractionDefinition_example.db
+Output XML: abstractionDefinition_example_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/abstractionDefinition_example.xml
+SQLite DB:   /home/v/TEMP/abstractionDefinition_example.db
+New XML:     /home/v/TEMP/abstractionDefinition_example_restored.xml
+[0;32m[SUCCESS][0m Processed abstractionDefinition_example.xml
+
+Processing: abstractor.xml
+Starting IP-XACT conversion process...
+Input XML:  abstractor.xml
+Database:   abstractor.db
+Output XML: abstractor_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/abstractor.xml
+SQLite DB:   /home/v/TEMP/abstractor.db
+New XML:     /home/v/TEMP/abstractor_restored.xml
+[0;32m[SUCCESS][0m Processed abstractor.xml
+
+Processing: autoConfigure.xml
+Starting IP-XACT conversion process...
+Input XML:  autoConfigure.xml
+Database:   autoConfigure.db
+Output XML: autoConfigure_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/autoConfigure.xml
+SQLite DB:   /home/v/TEMP/autoConfigure.db
+New XML:     /home/v/TEMP/autoConfigure_restored.xml
+[0;32m[SUCCESS][0m Processed autoConfigure.xml
+
+Processing: busDefinition.xml
+Starting IP-XACT conversion process...
+Input XML:  busDefinition.xml
+Database:   busDefinition.db
+Output XML: busDefinition_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/busDefinition.xml
+SQLite DB:   /home/v/TEMP/busDefinition.db
+New XML:     /home/v/TEMP/busDefinition_restored.xml
+[0;32m[SUCCESS][0m Processed busDefinition.xml
+
+Processing: busInterface.xml
+Starting IP-XACT conversion process...
+Input XML:  busInterface.xml
+Database:   busInterface.db
+Output XML: busInterface_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/busInterface.xml
+SQLite DB:   /home/v/TEMP/busInterface.db
+New XML:     /home/v/TEMP/busInterface_restored.xml
+[0;32m[SUCCESS][0m Processed busInterface.xml
+
+Processing: catalog.xml
+Starting IP-XACT conversion process...
+Input XML:  catalog.xml
+Database:   catalog.db
+Output XML: catalog_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/catalog.xml
+SQLite DB:   /home/v/TEMP/catalog.db
+New XML:     /home/v/TEMP/catalog_restored.xml
+[0;32m[SUCCESS][0m Processed catalog.xml
+
+Processing: commonStructures.xml
+Starting IP-XACT conversion process...
+Input XML:  commonStructures.xml
+Database:   commonStructures.db
+Output XML: commonStructures_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/commonStructures.xml
+SQLite DB:   /home/v/TEMP/commonStructures.db
+New XML:     /home/v/TEMP/commonStructures_restored.xml
+[0;32m[SUCCESS][0m Processed commonStructures.xml
+
+Processing: component.xml
+Starting IP-XACT conversion process...
+Input XML:  component.xml
+Database:   component.db
+Output XML: component_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/component.xml
+SQLite DB:   /home/v/TEMP/component.db
+New XML:     /home/v/TEMP/component_restored.xml
+[0;32m[SUCCESS][0m Processed component.xml
+
+Processing: configurable.xml
+Starting IP-XACT conversion process...
+Input XML:  configurable.xml
+Database:   configurable.db
+Output XML: configurable_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/configurable.xml
+SQLite DB:   /home/v/TEMP/configurable.db
+New XML:     /home/v/TEMP/configurable_restored.xml
+[0;32m[SUCCESS][0m Processed configurable.xml
+
+Processing: constraints.xml
+Starting IP-XACT conversion process...
+Input XML:  constraints.xml
+Database:   constraints.db
+Output XML: constraints_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/constraints.xml
+SQLite DB:   /home/v/TEMP/constraints.db
+New XML:     /home/v/TEMP/constraints_restored.xml
+[0;32m[SUCCESS][0m Processed constraints.xml
+
+Processing: design.xml
+Starting IP-XACT conversion process...
+Input XML:  design.xml
+Database:   design.db
+Output XML: design_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/design.xml
+SQLite DB:   /home/v/TEMP/design.db
+New XML:     /home/v/TEMP/design_restored.xml
+[0;32m[SUCCESS][0m Processed design.xml
+
+Processing: designConfig.xml
+Starting IP-XACT conversion process...
+Input XML:  designConfig.xml
+Database:   designConfig.db
+Output XML: designConfig_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/designConfig.xml
+SQLite DB:   /home/v/TEMP/designConfig.db
+New XML:     /home/v/TEMP/designConfig_restored.xml
+[0;32m[SUCCESS][0m Processed designConfig.xml
+
+Processing: file.xml
+Starting IP-XACT conversion process...
+Input XML:  file.xml
+Database:   file.db
+Output XML: file_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/file.xml
+SQLite DB:   /home/v/TEMP/file.db
+New XML:     /home/v/TEMP/file_restored.xml
+[0;32m[SUCCESS][0m Processed file.xml
+
+Processing: fileType.xml
+Starting IP-XACT conversion process...
+Input XML:  fileType.xml
+Database:   fileType.db
+Output XML: fileType_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/fileType.xml
+SQLite DB:   /home/v/TEMP/fileType.db
+New XML:     /home/v/TEMP/fileType_restored.xml
+[0;32m[SUCCESS][0m Processed fileType.xml
+
+Processing: generator.xml
+Starting IP-XACT conversion process...
+Input XML:  generator.xml
+Database:   generator.db
+Output XML: generator_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/generator.xml
+SQLite DB:   /home/v/TEMP/generator.db
+New XML:     /home/v/TEMP/generator_restored.xml
+[0;32m[SUCCESS][0m Processed generator.xml
+
+Processing: identifier.xml
+Starting IP-XACT conversion process...
+Input XML:  identifier.xml
+Database:   identifier.db
+Output XML: identifier_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/identifier.xml
+SQLite DB:   /home/v/TEMP/identifier.db
+New XML:     /home/v/TEMP/identifier_restored.xml
+[0;32m[SUCCESS][0m Processed identifier.xml
+
+Processing: index.xml
+Starting IP-XACT conversion process...
+Input XML:  index.xml
+Database:   index.db
+Output XML: index_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/index.xml
+SQLite DB:   /home/v/TEMP/index.db
+New XML:     /home/v/TEMP/index_restored.xml
+[0;32m[SUCCESS][0m Processed index.xml
+
+Processing: index_example.xml
+Starting IP-XACT conversion process...
+Input XML:  index_example.xml
+Database:   index_example.db
+Output XML: index_example_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/index_example.xml
+SQLite DB:   /home/v/TEMP/index_example.db
+New XML:     /home/v/TEMP/index_example_restored.xml
+[0;32m[SUCCESS][0m Processed index_example.xml
+
+Processing: memoryMap.xml
+Starting IP-XACT conversion process...
+Input XML:  memoryMap.xml
+Database:   memoryMap.db
+Output XML: memoryMap_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/memoryMap.xml
+SQLite DB:   /home/v/TEMP/memoryMap.db
+New XML:     /home/v/TEMP/memoryMap_restored.xml
+[0;32m[SUCCESS][0m Processed memoryMap.xml
+
+Processing: model.xml
+Starting IP-XACT conversion process...
+Input XML:  model.xml
+Database:   model.db
+Output XML: model_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/model.xml
+SQLite DB:   /home/v/TEMP/model.db
+New XML:     /home/v/TEMP/model_restored.xml
+[0;32m[SUCCESS][0m Processed model.xml
+
+Processing: port.xml
+Starting IP-XACT conversion process...
+Input XML:  port.xml
+Database:   port.db
+Output XML: port_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/port.xml
+SQLite DB:   /home/v/TEMP/port.db
+New XML:     /home/v/TEMP/port_restored.xml
+[0;32m[SUCCESS][0m Processed port.xml
+
+Processing: registers_complete.xml
+Starting IP-XACT conversion process...
+Input XML:  registers_complete.xml
+Database:   registers_complete.db
+Output XML: registers_complete_restored.xml
+
+1. Converting XML to SQLite...
+
+Processing:
+Input XML:     /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/registers_complete.xml
+Database path: /home/v/TEMP/registers_complete.db
+
+Debug: XML Structure:
+Root tag: {http://www.accellera.org/XMLSchema/IPXACT/1685-2014}component
+Namespace: http://www.accellera.org/XMLSchema/IPXACT/1685-2014
+Available child elements: ['{http://www.accellera.org/XMLSchema/IPXACT/1685-2014}vendor', '{http://www.accellera.org/XMLSchema/IPXACT/1685-2014}library', '{http://www.accellera.org/XMLSchema/IPXACT/1685-2014}name', '{http://www.accellera.org/XMLSchema/IPXACT/1685-2014}version', '{http://www.accellera.org/XMLSchema/IPXACT/1685-2014}memoryMaps']
+
+Debug: IP-XACT Component Information:
+Vendor: example.com
+Library: registers
+Name: register_map
+Version: 1.0
+
+Debug: Using namespace - http://www.accellera.org/XMLSchema/IPXACT/1685-2014
+Debug: Found register - SVDB_COMPLETE_REG (Description: Complete register containing all status information, ReadAction: N/A)
+Debug: Found register - SVDB_RW_REG (Description: Read-write register with multiple access types, ReadAction: N/A)
+Debug: Found register - SVDB_RO_REG (Description: Read-only register for status monitoring, ReadAction: N/A)
+Debug: Found register - SVDB_WO_REG (Description: Write-only register for control operations, ReadAction: N/A)
+Debug: Found register - SVDB_RW1_REG (Description: Write-once register for configuration, ReadAction: N/A)
+Debug: Found register - SVDB_RC_REG (Description: Read-clear register that clears on read, ReadAction: clear)
+Debug: Found register - SVDB_W1_REG (Description: Write-1-to-clear register for status clearing operations, ReadAction: N/A)
+Debug: Found register - SVDB_RWC_REG (Description: Read-write-clear register with clear on write functionality, ReadAction: clear)
+Debug: Found register - SVDB_READ_CLEAR_REG (Description: Register that automatically clears its contents after being read, ReadAction: clear)
+Debug: Found register - SVDB_READ_ACTIONS_REG (Description: Register demonstrating different read action behaviors (clear, set, modify), ReadAction: N/A)
+Debug: Found register - SVDB_WRITE_ACTIONS_REG (Description: Register demonstrating different write action behaviors (clear, set, toggle), ReadAction: N/A)
+
+WARNING: Database '/home/v/TEMP/registers_complete.db' already exists! Checking for duplicate records...
+
+Skipping: Found existing record - XML v1.0(UTF-8), Schema: http://www.accellera.org/XMLSchema/IPXACT/1685-2014, Vendor: example.com, Lib: registers, Name: register_map, Ver: 1.0, Desc: , Created: 2025-04-07T20:46:53.899605
+
+Processing 11 registers...
+
+Added 0 new registers to database
+
+Successfully processed 11 registers
+
+2. Converting SQLite back to XML...
+Input database: /home/v/TEMP/registers_complete.db
+Output XML: /home/v/TEMP/registers_complete_restored.xml
+Warning: Failed to parse fields JSON for register SVDB_RWC_REG: Expecting value: line 1 column 1 (char 0)
+Successfully created XML file with 11 registers: /home/v/TEMP/registers_complete_restored.xml
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/registers_complete.xml
+SQLite DB:   /home/v/TEMP/registers_complete.db
+New XML:     /home/v/TEMP/registers_complete_restored.xml
+[0;32m[SUCCESS][0m Processed registers_complete.xml
+
+Processing: signalDrivers.xml
+Starting IP-XACT conversion process...
+Input XML:  signalDrivers.xml
+Database:   signalDrivers.db
+Output XML: signalDrivers_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/signalDrivers.xml
+SQLite DB:   /home/v/TEMP/signalDrivers.db
+New XML:     /home/v/TEMP/signalDrivers_restored.xml
+[0;32m[SUCCESS][0m Processed signalDrivers.xml
+
+Processing: simpleTypes.xml
+Starting IP-XACT conversion process...
+Input XML:  simpleTypes.xml
+Database:   simpleTypes.db
+Output XML: simpleTypes_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/simpleTypes.xml
+SQLite DB:   /home/v/TEMP/simpleTypes.db
+New XML:     /home/v/TEMP/simpleTypes_restored.xml
+[0;32m[SUCCESS][0m Processed simpleTypes.xml
+
+Processing: subInstances.xml
+Starting IP-XACT conversion process...
+Input XML:  subInstances.xml
+Database:   subInstances.db
+Output XML: subInstances_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/subInstances.xml
+SQLite DB:   /home/v/TEMP/subInstances.db
+New XML:     /home/v/TEMP/subInstances_restored.xml
+[0;32m[SUCCESS][0m Processed subInstances.xml
+
+Processing: xml.xml
+Starting IP-XACT conversion process...
+Input XML:  xml.xml
+Database:   xml.db
+Output XML: xml_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/xml.xml
+SQLite DB:   /home/v/TEMP/xml.db
+New XML:     /home/v/TEMP/xml_restored.xml
+[0;32m[SUCCESS][0m Processed xml.xml
+
+Processing: xml_example.xml
+Starting IP-XACT conversion process...
+Input XML:  xml_example.xml
+Database:   xml_example.db
+Output XML: xml_example_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/xml_example.xml
+SQLite DB:   /home/v/TEMP/xml_example.db
+New XML:     /home/v/TEMP/xml_example_restored.xml
+[0;32m[SUCCESS][0m Processed xml_example.xml
+
+Processing: xml_id_example.xml
+Starting IP-XACT conversion process...
+Input XML:  xml_id_example.xml
+Database:   xml_id_example.db
+Output XML: xml_id_example_restored.xml
+
+1. Converting XML to SQLite...
+
+2. Converting SQLite back to XML...
+
+File locations:
+Original XML: /media/sf_workspace/svdb_gateway/examples/ip_xact/1685-2014/examples/xml_id_example.xml
+SQLite DB:   /home/v/TEMP/xml_id_example.db
+New XML:     /home/v/TEMP/xml_id_example_restored.xml
+[0;32m[SUCCESS][0m Processed xml_id_example.xml
+
+----------------------------------------
+Batch processing completed successfully.
