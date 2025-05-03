@@ -1,36 +1,97 @@
 #include "sqlite_primitive.h"
+#include <string.h>
+#include <stdlib.h>
+#include <stdarg.h>
+
+void dbg_print(const char *prefix, const char *func_name, const char *format, ...) {
+#ifdef VERBOSE
+    va_list args;
+    va_start(args, format);
+    fprintf(stderr, "%s SVDB [%s]: ", prefix, func_name);
+    vfprintf(stderr, format, args);
+    va_end(args);
+#endif
+}
+
+void err_print(const char *prefix, const char *func_name, const char *format, ...) {
+    va_list args;
+    va_start(args, format);
+    fprintf(stderr, "%s SVDB [%s]: ", prefix, func_name);
+    vfprintf(stderr, format, args);
+    va_end(args);
+}
 
 /************************************************
  * Connection Management
  ************************************************/
 
 sqlite3 *sqlite_prim_open_database(const char *db_path) {
-    fprintf(stderr, "Attempting to open database at: %s\n", db_path);
+    dbg_print("C_PRIM", "sqlite_prim_open_database", "Attempting to open database at: %s\n", db_path);
     sqlite3 *db = NULL;
     int result = sqlite3_open(db_path, &db);
     if (result != SQLITE_OK) {
-        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
-        fprintf(stderr, "SQLite error code: %d\n", result);
+        err_print("C_PRIM", "sqlite_prim_open_database", "Cannot open database: %s\n", sqlite3_errmsg(db));
+        err_print("C_PRIM", "sqlite_prim_open_database", "SQLite error code: %d\n", result);
         if (db) {
             sqlite3_close(db);
         }
         return NULL;
     }
-    fprintf(stderr, "Successfully opened database\n");
+    dbg_print("C_PRIM", "sqlite_prim_open_database", "Successfully opened database\n");
     return db;
 }
 
 void sqlite_prim_close_database(sqlite3 *db) {
+    dbg_print("C_PRIM", "sqlite_prim_close_database", "Closing database\n");
     sqlite3_close(db);
 }
 
 int sqlite_prim_execute_query(sqlite3 *db, const char *query) {
-    char *err_msg = NULL;
-    if (sqlite3_exec(db, query, 0, 0, &err_msg) != SQLITE_OK) {
-        fprintf(stderr, "SQL error: %s\n", err_msg);
-        sqlite3_free(err_msg);
+    sqlite3_stmt *stmt;
+    int result;
+
+    dbg_print("C_PRIM", "sqlite_prim_execute_query", "Executing query: %s\n", query);
+
+    if (sqlite3_prepare_v2(db, query, -1, &stmt, NULL) != SQLITE_OK) {
+        err_print("C_PRIM", "sqlite_prim_execute_query", "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
         return -1;
     }
+
+    // Print column headers
+    int col_count = sqlite3_column_count(stmt);
+    dbg_print("C_PRIM", "sqlite_prim_execute_query", "Query result columns: %d\n", col_count);
+
+    dbg_print("C_PRIM", "sqlite_prim_execute_query", "|");
+    for (int i = 0; i < col_count; i++) {
+        fprintf(stderr, " %s |", sqlite3_column_name(stmt, i));
+    }
+    fprintf(stderr, "\n");
+
+    if (col_count > 0) {
+        dbg_print("C_PRIM", "sqlite_prim_execute_query", "|");
+        for (int i = 0; i < col_count; i++) {
+            fprintf(stderr, "----|");
+        }
+        fprintf(stderr, "\n");
+    }
+
+    // Execute query and print results
+    while ((result = sqlite3_step(stmt)) == SQLITE_ROW) {
+        dbg_print("C_PRIM", "sqlite_prim_execute_query", "|");
+        for (int i = 0; i < col_count; i++) {
+            const char *val = (const char *)sqlite3_column_text(stmt, i);
+            fprintf(stderr, " %s |", val ? val : "NULL");
+        }
+        fprintf(stderr, "\n");
+    }
+
+    if (result != SQLITE_DONE) {
+        err_print("C_PRIM", "sqlite_prim_execute_query", "SQL error: %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(stmt);
+        return -1;
+    }
+
+    sqlite3_finalize(stmt);
     return 0;
 }
 
@@ -42,10 +103,12 @@ int sqlite_prim_get_row(sqlite3 *db, const char *table, int row_id, char ***colu
     char query[256];
     sqlite3_stmt *stmt;
 
+    dbg_print("C_PRIM", "sqlite_prim_get_row", "Getting row %d from table %s\n", row_id, table);
+
     snprintf(query, sizeof(query), "SELECT * FROM %s WHERE id = ?", table);
 
     if (sqlite3_prepare_v2(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
+        err_print("C_PRIM", "sqlite_prim_get_row", "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
         return -1;
     }
 
@@ -60,6 +123,7 @@ int sqlite_prim_get_row(sqlite3 *db, const char *table, int row_id, char ***colu
             (*columns)[i] = strdup(sqlite3_column_name(stmt, i));
             const char *val = (const char *)sqlite3_column_text(stmt, i);
             (*values)[i] = val ? strdup(val) : NULL;
+            dbg_print("C_PRIM", "sqlite_prim_get_row", "Column %s = %s\n", (*columns)[i], (*values)[i]);
         }
         sqlite3_finalize(stmt);
         return 0;
@@ -70,11 +134,15 @@ int sqlite_prim_get_row(sqlite3 *db, const char *table, int row_id, char ***colu
 }
 
 int sqlite_prim_insert_row(sqlite3 *db, const char *table, const char **columns, const char **values, int count) {
-    char query[1024];
-    char cols[512] = "";
-    char vals[512] = "";
+    char query[2048];
+    char cols[1024] = "";
+    char vals[1024] = "";
     sqlite3_stmt *stmt;
+    int result;
 
+    dbg_print("C_PRIM", "sqlite_prim_insert_row", "Inserting into table: %s\n", table);
+
+    // Build columns and values strings
     for (int i = 0; i < count; i++) {
         strcat(cols, columns[i]);
         strcat(vals, "?");
@@ -84,25 +152,42 @@ int sqlite_prim_insert_row(sqlite3 *db, const char *table, const char **columns,
         }
     }
 
+    dbg_print("C_PRIM", "sqlite_prim_insert_row", "Columns: %s\n", cols);
+    dbg_print("C_PRIM", "sqlite_prim_insert_row", "Values: ");
+    for (int i = 0; i < count; i++) {
+        fprintf(stderr, "%s ", values[i]);
+    }
+    fprintf(stderr, "\n");
+
     snprintf(query, sizeof(query), "INSERT INTO %s (%s) VALUES (%s)", table, cols, vals);
 
     if (sqlite3_prepare_v2(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
+        err_print("C_PRIM", "sqlite_prim_insert_row", "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
+        err_print("C_PRIM", "sqlite_prim_insert_row", "Query: %s\n", query);
         return -1;
     }
 
     for (int i = 0; i < count; i++) {
-        sqlite3_bind_text(stmt, i + 1, values[i], -1, SQLITE_STATIC);
+        result = sqlite3_bind_text(stmt, i + 1, values[i], -1, SQLITE_STATIC);
+        if (result != SQLITE_OK) {
+            err_print("C_PRIM", "sqlite_prim_insert_row", "Failed to bind value %d: %s\n", i + 1, sqlite3_errmsg(db));
+            sqlite3_finalize(stmt);
+            return -1;
+        }
     }
 
-    if (sqlite3_step(stmt) != SQLITE_DONE) {
-        fprintf(stderr, "Failed to execute statement: %s\n", sqlite3_errmsg(db));
+    result = sqlite3_step(stmt);
+    if (result != SQLITE_DONE) {
+        err_print("C_PRIM", "sqlite_prim_insert_row", "Failed to execute statement: %s\n", sqlite3_errmsg(db));
+        err_print("C_PRIM", "sqlite_prim_insert_row", "SQLite error code: %d\n", result);
         sqlite3_finalize(stmt);
         return -1;
     }
 
+    result = sqlite3_last_insert_rowid(db);
+    dbg_print("C_PRIM", "sqlite_prim_insert_row", "Inserted row with ID: %d\n", result);
     sqlite3_finalize(stmt);
-    return sqlite3_last_insert_rowid(db);
+    return result;
 }
 
 int sqlite_prim_delete_row(sqlite3 *db, const char *table, int row_id) {
@@ -112,14 +197,14 @@ int sqlite_prim_delete_row(sqlite3 *db, const char *table, int row_id) {
     snprintf(query, sizeof(query), "DELETE FROM %s WHERE id = ?", table);
 
     if (sqlite3_prepare_v2(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
+        err_print("C_PRIM", "sqlite_prim_delete_row", "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
         return -1;
     }
 
     sqlite3_bind_int(stmt, 1, row_id);
 
     if (sqlite3_step(stmt) != SQLITE_DONE) {
-        fprintf(stderr, "Failed to execute statement: %s\n", sqlite3_errmsg(db));
+        err_print("C_PRIM", "sqlite_prim_delete_row", "Failed to execute statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return -1;
     }
@@ -139,7 +224,7 @@ int sqlite_prim_get_all_rows(sqlite3 *db, const char *table, char ****rows, int 
     snprintf(query, sizeof(query), "SELECT * FROM %s", table);
 
     if (sqlite3_prepare_v2(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
+        err_print("C_PRIM", "sqlite_prim_get_all_rows", "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
         return -1;
     }
 
@@ -187,15 +272,15 @@ int sqlite_prim_read_table_schema(sqlite3 *db) {
     sqlite3_stmt *stmt;
 
     if (sqlite3_prepare_v2(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
+        err_print("C_PRIM", "sqlite_prim_read_table_schema", "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
         return -1;
     }
 
-    printf("Schema:\n");
+    dbg_print("C_PRIM", "sqlite_prim_read_table_schema", "Schema:\n");
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         const char *name = (const char *)sqlite3_column_text(stmt, 0);
         const char *type = (const char *)sqlite3_column_text(stmt, 1);
-        printf("Name: %s, Type: %s\n", name, type);
+        dbg_print("C_PRIM", "sqlite_prim_read_table_schema", "Name: %s, Type: %s\n", name, type);
     }
 
     sqlite3_finalize(stmt);
@@ -249,7 +334,7 @@ int sqlite_prim_table_exists(sqlite3 *db, const char *table_name) {
     snprintf(query, sizeof(query), "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='%s';", table_name);
 
     if (sqlite3_prepare_v2(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
+        err_print("C_PRIM", "sqlite_prim_table_exists", "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
         return -1;
     }
 

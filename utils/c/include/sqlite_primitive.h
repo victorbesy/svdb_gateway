@@ -2,6 +2,13 @@
 #define SQLITE_PRIMITIVE_H
 
 #include "svdb_typedef.h"
+#include <stdarg.h>
+
+/************************************************
+ * Debug and Error Printing
+ ************************************************/
+void dbg_print(const char *prefix, const char *func_name, const char *format, ...);
+void err_print(const char *prefix, const char *func_name, const char *format, ...);
 
 /************************************************
  * Connection Management

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Vcs_common.h"
+#include "Vtest_sqlite.h"
 #include "verilated.h"
 #include "verilated_vcd_c.h"
 #include <time.h>
@@ -20,7 +20,7 @@ int main(int argc, char **argv, char **env) {
 
   Verilated::commandArgs(argc, argv);
   // init top verilog instance
-  Vcs_common* Target = new Vcs_common;
+  Vtest_sqlite* Target = new Vtest_sqlite;
 
   // init trace dump
   Verilated::traceEverOn(true);
