@@ -1,50 +1,51 @@
 #ifndef SQLITE_PRIMITIVE_H
 #define SQLITE_PRIMITIVE_H
 
-#include <sqlite3.h>
+#include "svdb_typedef.h"
 
 /************************************************
  * Connection Management
  ************************************************/
-int open_database(const char *db_path, sqlite3 **db);
-void close_database(sqlite3 *db);
-int execute_query(sqlite3 *db, const char *query);
+sqlite3 *sqlite_prim_open_database(const char *db_path);
+void sqlite_prim_close_database(sqlite3 *db);
+int sqlite_prim_execute_query(sqlite3 *db, const char *query);
 
 /************************************************
  * Single Row/Column Operations
  ************************************************/
-int get_row(sqlite3 *db, const char *table, int row_id, char ***columns, char ***values, int *col_count);
-int insert_row(sqlite3 *db, const char *table, const char **columns, const char **values, int count);
-int delete_row(sqlite3 *db, const char *table, int row_id);
+int sqlite_prim_get_row(sqlite3 *db, const char *table, int row_id, char ***columns, char ***values, int *col_count);
+int sqlite_prim_insert_row(sqlite3 *db, const char *table, const char **columns, const char **values, int count);
+int sqlite_prim_delete_row(sqlite3 *db, const char *table, int row_id);
 
 /************************************************
  * Multi-Row Operations
  ************************************************/
-int get_all_rows(sqlite3 *db, const char *table, char ****rows, int *row_count, int *col_count);
+int sqlite_prim_get_all_rows(sqlite3 *db, const char *table, char ****rows, int *row_count, int *col_count);
 
 /************************************************
  * Table Operations
  ************************************************/
-int create_table(sqlite3 *db, const char *table_name, const char *columns);
-int drop_table(sqlite3 *db, const char *table_name);
+int sqlite_prim_create_table(sqlite3 *db, const char *table_name, const char *columns);
+int sqlite_prim_drop_table(sqlite3 *db, const char *table_name);
+int sqlite_prim_read_table_schema(sqlite3 *db);
 
 /************************************************
  * Index Management
  ************************************************/
-int create_index(sqlite3 *db, const char *index_name, const char *table, const char *column);
-int drop_index(sqlite3 *db, const char *index_name);
+int sqlite_prim_create_index(sqlite3 *db, const char *index_name, const char *table, const char *column);
+int sqlite_prim_drop_index(sqlite3 *db, const char *index_name);
 
 /************************************************
  * Transaction Control
  ************************************************/
-int begin_transaction(sqlite3 *db);
-int commit_transaction(sqlite3 *db);
-int rollback_transaction(sqlite3 *db);
+int sqlite_prim_begin_transaction(sqlite3 *db);
+int sqlite_prim_commit_transaction(sqlite3 *db);
+int sqlite_prim_rollback_transaction(sqlite3 *db);
 
 /************************************************
  * Database Maintenance
  ************************************************/
-int vacuum_database(sqlite3 *db);
-int table_exists(sqlite3 *db, const char *table_name);
+int sqlite_prim_vacuum_database(sqlite3 *db);
+int sqlite_prim_table_exists(sqlite3 *db, const char *table_name);
 
 #endif // SQLITE_PRIMITIVE_H

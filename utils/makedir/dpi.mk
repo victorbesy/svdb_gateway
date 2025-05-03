@@ -1,6 +1,6 @@
 VERILATOR = verilator
 SRCS = ../dpi/src/sqlite_dpi.sv
-CFLAGS = -I../dpi/include -L../../bin -lsqlite_dpi
+CFLAGS = -I../dpi/include -L../../bin -libdbdpi
 
 .PHONY: all clean
 

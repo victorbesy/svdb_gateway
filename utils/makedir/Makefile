@@ -1,6 +1,6 @@
 .PHONY: all clean c dpi py help
 
-all: c  py
+all: c
 
 c:
 	$(MAKE) -f c.mk

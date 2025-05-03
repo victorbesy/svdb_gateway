@@ -1,26 +1,30 @@
 #include "sqlite_primitive.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sqlite3.h>
 
 /************************************************
  * Connection Management
  ************************************************/
 
-int open_database(const char *db_path, sqlite3 **db) {
-    if (sqlite3_open(db_path, db) != SQLITE_OK) {
-        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(*db));
-        return -1;
+sqlite3 *sqlite_prim_open_database(const char *db_path) {
+    fprintf(stderr, "Attempting to open database at: %s\n", db_path);
+    sqlite3 *db = NULL;
+    int result = sqlite3_open(db_path, &db);
+    if (result != SQLITE_OK) {
+        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "SQLite error code: %d\n", result);
+        if (db) {
+            sqlite3_close(db);
+        }
+        return NULL;
     }
-    return 0;
+    fprintf(stderr, "Successfully opened database\n");
+    return db;
 }
 
-void close_database(sqlite3 *db) {
+void sqlite_prim_close_database(sqlite3 *db) {
     sqlite3_close(db);
 }
 
-int execute_query(sqlite3 *db, const char *query) {
+int sqlite_prim_execute_query(sqlite3 *db, const char *query) {
     char *err_msg = NULL;
     if (sqlite3_exec(db, query, 0, 0, &err_msg) != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", err_msg);
@@ -34,7 +38,7 @@ int execute_query(sqlite3 *db, const char *query) {
  * Single Row/Column Operations
  ************************************************/
 
-int get_row(sqlite3 *db, const char *table, int row_id, char ***columns, char ***values, int *col_count) {
+int sqlite_prim_get_row(sqlite3 *db, const char *table, int row_id, char ***columns, char ***values, int *col_count) {
     char query[256];
     sqlite3_stmt *stmt;
 
@@ -65,7 +69,7 @@ int get_row(sqlite3 *db, const char *table, int row_id, char ***columns, char **
     return -1;
 }
 
-int insert_row(sqlite3 *db, const char *table, const char **columns, const char **values, int count) {
+int sqlite_prim_insert_row(sqlite3 *db, const char *table, const char **columns, const char **values, int count) {
     char query[1024];
     char cols[512] = "";
     char vals[512] = "";
@@ -101,7 +105,7 @@ int insert_row(sqlite3 *db, const char *table, const char **columns, const char 
     return sqlite3_last_insert_rowid(db);
 }
 
-int delete_row(sqlite3 *db, const char *table, int row_id) {
+int sqlite_prim_delete_row(sqlite3 *db, const char *table, int row_id) {
     char query[256];
     sqlite3_stmt *stmt;
 
@@ -128,7 +132,7 @@ int delete_row(sqlite3 *db, const char *table, int row_id) {
  * Multi-Row Operations
  ************************************************/
 
-int get_all_rows(sqlite3 *db, const char *table, char ****rows, int *row_count, int *col_count) {
+int sqlite_prim_get_all_rows(sqlite3 *db, const char *table, char ****rows, int *row_count, int *col_count) {
     char query[256];
     sqlite3_stmt *stmt;
 
@@ -166,59 +170,79 @@ int get_all_rows(sqlite3 *db, const char *table, char ****rows, int *row_count, 
  * Table Operations
  ************************************************/
 
-int create_table(sqlite3 *db, const char *table_name, const char *columns) {
+int sqlite_prim_create_table(sqlite3 *db, const char *table_name, const char *columns) {
     char query[1024];
     snprintf(query, sizeof(query), "CREATE TABLE IF NOT EXISTS %s (%s);", table_name, columns);
-    return execute_query(db, query);
+    return sqlite_prim_execute_query(db, query);
 }
 
-int drop_table(sqlite3 *db, const char *table_name) {
+int sqlite_prim_drop_table(sqlite3 *db, const char *table_name) {
     char query[256];
     snprintf(query, sizeof(query), "DROP TABLE IF EXISTS %s;", table_name);
-    return execute_query(db, query);
+    return sqlite_prim_execute_query(db, query);
+}
+
+int sqlite_prim_read_table_schema(sqlite3 *db) {
+    const char *query = "SELECT name, type FROM sqlite_master WHERE type IN ('table', 'view') ORDER BY name;";
+    sqlite3_stmt *stmt;
+
+    if (sqlite3_prepare_v2(db, query, -1, &stmt, NULL) != SQLITE_OK) {
+        fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
+        return -1;
+    }
+
+    printf("Schema:\n");
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        const char *name = (const char *)sqlite3_column_text(stmt, 0);
+        const char *type = (const char *)sqlite3_column_text(stmt, 1);
+        printf("Name: %s, Type: %s\n", name, type);
+    }
+
+    sqlite3_finalize(stmt);
+    return 0;
 }
 
 /************************************************
  * Index Management
  ************************************************/
 
-int create_index(sqlite3 *db, const char *index_name, const char *table, const char *column) {
+int sqlite_prim_create_index(sqlite3 *db, const char *index_name, const char *table, const char *column) {
     char query[256];
     snprintf(query, sizeof(query), "CREATE INDEX IF NOT EXISTS %s ON %s(%s);", index_name, table, column);
-    return execute_query(db, query);
+    return sqlite_prim_execute_query(db, query);
 }
 
-int drop_index(sqlite3 *db, const char *index_name) {
+int sqlite_prim_drop_index(sqlite3 *db, const char *index_name) {
     char query[256];
     snprintf(query, sizeof(query), "DROP INDEX IF EXISTS %s;", index_name);
-    return execute_query(db, query);
+    return sqlite_prim_execute_query(db, query);
 }
 
 /************************************************
  * Transaction Control
  ************************************************/
 
-int begin_transaction(sqlite3 *db) {
-    return execute_query(db, "BEGIN TRANSACTION;");
+int sqlite_prim_begin_transaction(sqlite3 *db) {
+    return sqlite_prim_execute_query(db, "BEGIN TRANSACTION;");
 }
 
-int commit_transaction(sqlite3 *db) {
-    return execute_query(db, "COMMIT;");
+int sqlite_prim_commit_transaction(sqlite3 *db) {
+    return sqlite_prim_execute_query(db, "COMMIT;");
 }
 
-int rollback_transaction(sqlite3 *db) {
-    return execute_query(db, "ROLLBACK;");
+int sqlite_prim_rollback_transaction(sqlite3 *db) {
+    return sqlite_prim_execute_query(db, "ROLLBACK;");
 }
 
 /************************************************
  * Database Maintenance
  ************************************************/
 
-int vacuum_database(sqlite3 *db) {
-    return execute_query(db, "VACUUM;");
+int sqlite_prim_vacuum_database(sqlite3 *db) {
+    return sqlite_prim_execute_query(db, "VACUUM;");
 }
 
-int table_exists(sqlite3 *db, const char *table_name) {
+int sqlite_prim_table_exists(sqlite3 *db, const char *table_name) {
     char query[256];
     sqlite3_stmt *stmt;
 

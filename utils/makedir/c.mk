@@ -1,7 +1,10 @@
 CC = gcc
-CFLAGS = -fPIC -shared -I../c/include
+CFLAGS = -fPIC -shared -I../c/include -I../dpi/include  -I/usr/include
+LDFLAGS = -lsqlite3
 BIN_DIR = ../../bin
-TARGET = $(BIN_DIR)/libsqlite_dpi.so
+TARGET = $(BIN_DIR)/libdbdpi.so
+SQLITE_PRIMITIVE_SRC = ../c/src/sqlite_primitive.c
+SQLITE_DPI_SRC = ../dpi/src/sqlite_dpi.c
 
 .PHONY: all clean
 
@@ -10,8 +13,8 @@ all: $(BIN_DIR) $(TARGET)
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
-$(TARGET): ../c/src/sqlite_dpi.c
-	$(CC) $(CFLAGS) -o $@ $^
+$(TARGET): $(SQLITE_PRIMITIVE_SRC) $(SQLITE_DPI_SRC)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 clean:
 	rm -f $(TARGET)

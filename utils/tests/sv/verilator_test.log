@@ -1,0 +1,17 @@
+Running simulation...
+Command: ./obj_dir/Vcs_common
+Attempting to open database at: test.db
+Successfully opened database
+Attempting to open database at: test.db
+Successfully opened database
+SQLite Tests: START
+Successfully opened SQLite database: test.db
+PASS: Basic_sqlite_test @0
+Successfully opened SQLite database: test.db
+PASS: Open SQLite DB test @0
+Successfully closed SQLite database
+PASS: Close SQLite DB test @0
+OVERALL TEST RESULT: PASS @0
+Tests Passed: 3, Tests Failed: 0, Total: 3
+- test_sqlite.sv:46: Verilog $finish
+Simulation complete. Test log file generated: ./verilator_test.log
