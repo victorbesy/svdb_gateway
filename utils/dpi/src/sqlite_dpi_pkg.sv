@@ -199,6 +199,97 @@ package sqlite_dpi_pkg;
 `endif
 
    /*
+    Function: sqlite_dpi_create_table
+    Create a new table in the database
+
+    Parameters:
+    db - database handle
+    table_name - name of the table to create
+    columns - column definitions
+
+    Returns:
+    0 on success, -1 on failure
+
+    Disable function `define: NO_SQLITE_DPI_CREATE_TABLE
+    */
+`ifndef NO_SQLITE_DPI_CREATE_TABLE
+   import "DPI-C" function int sqlite_dpi_create_table(input chandle db, input string table_name, input string columns);
+`endif
+
+   /*
+    Function: sqlite_dpi_drop_table
+    Drop a table from the database
+
+    Parameters:
+    db - database handle
+    table_name - name of the table to drop
+
+    Returns:
+    0 on success, -1 on failure
+
+    Disable function `define: NO_SQLITE_DPI_DROP_TABLE
+    */
+`ifndef NO_SQLITE_DPI_DROP_TABLE
+   import "DPI-C" function int sqlite_dpi_drop_table(input chandle db, input string table_name);
+`endif
+
+   /*
+    Function: sqlite_dpi_get_all_rows
+    Retrieve all rows from a table
+
+    Parameters:
+    db - database handle
+    table_name - name of the table
+    rows - output pointer to rows data
+    row_count - output pointer to row count
+    col_count - output pointer to column count
+
+    Returns:
+    0 on success, -1 on failure
+
+    Disable function `define: NO_SQLITE_DPI_GET_ALL_ROWS
+    */
+`ifndef NO_SQLITE_DPI_GET_ALL_ROWS
+   import "DPI-C" function int sqlite_dpi_get_all_rows(input chandle db, input string table_name, output chandle rows, output int row_count, output int col_count);
+`endif
+
+   /*
+    Function: sqlite_dpi_create_index
+    Create an index on a table column
+
+    Parameters:
+    db - database handle
+    index_name - name of the index to create
+    table - name of the table
+    column - name of the column to index
+
+    Returns:
+    0 on success, -1 on failure
+
+    Disable function `define: NO_SQLITE_DPI_CREATE_INDEX
+    */
+`ifndef NO_SQLITE_DPI_CREATE_INDEX
+   import "DPI-C" function int sqlite_dpi_create_index(input chandle db, input string index_name, input string table_name, input string column);
+`endif
+
+   /*
+    Function: sqlite_dpi_drop_index
+    Drop an index from the database
+
+    Parameters:
+    db - database handle
+    index_name - name of the index to drop
+
+    Returns:
+    0 on success, -1 on failure
+
+    Disable function `define: NO_SQLITE_DPI_DROP_INDEX
+    */
+`ifndef NO_SQLITE_DPI_DROP_INDEX
+   import "DPI-C" function int sqlite_dpi_drop_index(input chandle db, input string index_name);
+`endif
+
+   /*
     Function: sqlite_dpi_begin_transaction
     Begin a transaction
 

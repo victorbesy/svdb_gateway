@@ -22,6 +22,19 @@ int sqlite_dpi_table_exists(sqlite3 *db, const char *table_name);
 int sqlite_dpi_insert_row(sqlite3 *db, const char *table_name, const char *columns, const char *values);
 int sqlite_dpi_delete_row(sqlite3 *db, const char *table_name, int row_id);
 int sqlite_dpi_get_row(sqlite3 *db, const char *table_name, int row_id);
+int sqlite_dpi_create_table(sqlite3 *db, const char *table_name, const char *columns);
+int sqlite_dpi_drop_table(sqlite3 *db, const char *table_name);
+
+/************************************************
+ * Multi-Row Operations
+ ************************************************/
+int sqlite_dpi_get_all_rows(sqlite3 *db, const char *table_name, char ****rows, int *row_count, int *col_count);
+
+/************************************************
+ * Index Management
+ ************************************************/
+int sqlite_dpi_create_index(sqlite3 *db, const char *index_name, const char *table_name, const char *column);
+int sqlite_dpi_drop_index(sqlite3 *db, const char *index_name);
 
 /************************************************
  * Transaction Control

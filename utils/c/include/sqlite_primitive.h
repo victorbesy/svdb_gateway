@@ -39,7 +39,7 @@ int sqlite_prim_read_table_schema(sqlite3 *db);
 /************************************************
  * Index Management
  ************************************************/
-int sqlite_prim_create_index(sqlite3 *db, const char *index_name, const char *table, const char *column);
+int sqlite_prim_create_index(sqlite3 *db, const char *index_name, const char *table_name, const char *column);
 int sqlite_prim_drop_index(sqlite3 *db, const char *index_name);
 
 /************************************************

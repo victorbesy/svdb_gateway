@@ -134,6 +134,40 @@ int sqlite_dpi_get_row(sqlite3 *db, const char *table_name, int row_id) {
     return result;
 }
 
+int sqlite_dpi_create_table(sqlite3 *db, const char *table_name, const char *columns) {
+    dbg_print("DPI", "sqlite_dpi_create_table", "Creating table '%s' with columns: %s", table_name, columns);
+    return sqlite_prim_create_table(db, table_name, columns);
+}
+
+int sqlite_dpi_drop_table(sqlite3 *db, const char *table_name) {
+    dbg_print("DPI", "sqlite_dpi_drop_table", "Dropping table '%s'", table_name);
+    return sqlite_prim_drop_table(db, table_name);
+}
+
+/************************************************
+ * Multi-Row Operations
+ ************************************************/
+
+int sqlite_dpi_get_all_rows(sqlite3 *db, const char *table_name, char ****rows, int *row_count, int *col_count) {
+    dbg_print("DPI", "sqlite_dpi_get_all_rows", "Getting all rows from table '%s'", table_name);
+    return sqlite_prim_get_all_rows(db, table_name, rows, row_count, col_count);
+}
+
+/************************************************
+ * Index Management
+ ************************************************/
+
+int sqlite_dpi_create_index(sqlite3 *db, const char *index_name, const char *table_name, const char *column) {
+    dbg_print("DPI", "sqlite_dpi_create_index", "Creating index '%s' on table '%s', column '%s'",
+              index_name, table_name, column);
+    return sqlite_prim_create_index(db, index_name, table_name, column);
+}
+
+int sqlite_dpi_drop_index(sqlite3 *db, const char *index_name) {
+    dbg_print("DPI", "sqlite_dpi_drop_index", "Dropping index '%s'", index_name);
+    return sqlite_prim_drop_index(db, index_name);
+}
+
 /************************************************
  * Transaction Control
  ************************************************/
