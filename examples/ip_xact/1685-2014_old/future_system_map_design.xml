@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipxact:design
+  xmlns:ipxact="http://www.accellera.org/XMLSchema/IPXACT/1685-2014"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.accellera.org/XMLSchema/IPXACT/1685-2014 design.xsd">
+  <ipxact:vendor>example.vendor</ipxact:vendor>
+  <ipxact:library>example_lib</ipxact:library>
+  <ipxact:name>future_system_map</ipxact:name>
+  <ipxact:version>1.0</ipxact:version>
+  <ipxact:componentInstances>
+    <ipxact:componentInstance>
+      <ipxact:instanceName>SystemTop</ipxact:instanceName>
+      <ipxact:componentRef vendor="example.vendor" library="example_lib" name="TopLevel" version="1.0"/>
+    </ipxact:componentInstance>
+    <ipxact:componentInstance>
+      <ipxact:instanceName>BlockA_1</ipxact:instanceName>
+      <ipxact:componentRef vendor="example.vendor" library="example_lib" name="BlockA" version="1.0"/>
+    </ipxact:componentInstance>
+    <ipxact:componentInstance>
+      <ipxact:instanceName>BlockA_2</ipxact:instanceName>
+      <ipxact:componentRef vendor="example.vendor" library="example_lib" name="BlockA" version="1.0"/>
+    </ipxact:componentInstance>
+    <ipxact:componentInstance>
+      <ipxact:instanceName>BlockB_1</ipxact:instanceName>
+      <ipxact:componentRef vendor="example.vendor" library="example_lib" name="BlockB" version="1.0"/>
+    </ipxact:componentInstance>
+    <ipxact:componentInstance>
+      <ipxact:instanceName>BlockC_1</ipxact:instanceName>
+      <ipxact:componentRef vendor="example.vendor" library="example_lib" name="BlockC" version="1.0"/>
+    </ipxact:componentInstance>
+    <ipxact:componentInstance>
+      <ipxact:instanceName>BlockA_in_C</ipxact:instanceName>
+      <ipxact:componentRef vendor="example.vendor" library="example_lib" name="BlockA" version="1.0"/>
+    </ipxact:componentInstance>
+  </ipxact:componentInstances>
+  <ipxact:interconnections>
+    <ipxact:interconnection>
+      <ipxact:name>BlockC_to_BlockA</ipxact:name>
+      <ipxact:description>Logical connection indicating that BlockA_in_C is part of BlockC_1</ipxact:description>
+      <ipxact:activeInterface componentRef="BlockC_1" busRef="internal_bus"/>
+      <ipxact:activeInterface componentRef="BlockA_in_C" busRef="register_if"/>
+    </ipxact:interconnection>
+    <ipxact:interconnection>
+      <ipxact:name>System_to_BlockA_1</ipxact:name>
+      <ipxact:activeInterface componentRef="SystemTop" busRef="system_bus_interface"/>
+      <ipxact:activeInterface componentRef="BlockA_1" busRef="register_if"/>
+    </ipxact:interconnection>
+    <ipxact:interconnection>
+      <ipxact:name>System_to_BlockA_2</ipxact:name>
+      <ipxact:activeInterface componentRef="SystemTop" busRef="system_bus_interface"/>
+      <ipxact:activeInterface componentRef="BlockA_2" busRef="register_if"/>
+    </ipxact:interconnection>
+    <ipxact:interconnection>
+      <ipxact:name>System_to_BlockB_1</ipxact:name>
+      <ipxact:activeInterface componentRef="SystemTop" busRef="system_bus_interface"/>
+      <ipxact:activeInterface componentRef="BlockB_1" busRef="register_if"/>
+    </ipxact:interconnection>
+    <ipxact:interconnection>
+      <ipxact:name>System_to_BlockC_1</ipxact:name>
+      <ipxact:activeInterface componentRef="SystemTop" busRef="system_bus_interface"/>
+      <ipxact:activeInterface componentRef="BlockC_1" busRef="internal_bus"/>
+    </ipxact:interconnection>
+  </ipxact:interconnections>
+  <ipxact:description>This design contains a hierarchical relationship where BlockA_in_C is logically contained within BlockC_1. Component BlockA_1 and BlockA_2 are two instances of the same component. Address mapping is defined in the design configuration file.</ipxact:description>
+</ipxact:design>

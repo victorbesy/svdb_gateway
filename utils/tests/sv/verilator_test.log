@@ -1,210 +1,62 @@
 Running simulation...
 Command: ./obj_dir/Vtest_sqlite
-DPI SVDB [sqlite_dpi_open_database]: Opening database at path: test.dbC_PRIM SVDB [sqlite_prim_open_database]: Attempting to open database at: test.db
-C_PRIM SVDB [sqlite_prim_open_database]: Successfully opened database
-DPI SVDB [sqlite_dpi_close_database]: Closing databaseC_PRIM SVDB [sqlite_prim_close_database]: Closing database
-DPI SVDB [sqlite_dpi_open_database]: Opening database at path: test.dbC_PRIM SVDB [sqlite_prim_open_database]: Attempting to open database at: test.db
-C_PRIM SVDB [sqlite_prim_open_database]: Successfully opened database
-DPI SVDB [sqlite_dpi_write_schema]: Writing schema for table 'test_table' with columns: id INTEGER PRIMARY KEY, name TEXT, value INTEGERC_PRIM SVDB [sqlite_prim_execute_query]: Executing query: CREATE TABLE IF NOT EXISTS test_table (id INTEGER PRIMARY KEY, name TEXT, value INTEGER);
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 0
-C_PRIM SVDB [sqlite_prim_execute_query]: |
-DPI SVDB [sqlite_dpi_table_exists]: Checking if table 'test_table' existsDPI SVDB [sqlite_dpi_read_schema]: Reading database schemaC_PRIM SVDB [sqlite_prim_read_table_schema]: Schema:
-C_PRIM SVDB [sqlite_prim_read_table_schema]: Name: test_table, Type: table
-DPI SVDB [sqlite_dpi_begin_transaction]: Beginning transactionC_PRIM SVDB [sqlite_prim_execute_query]: Executing query: BEGIN TRANSACTION;
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 0
-C_PRIM SVDB [sqlite_prim_execute_query]: |
-DPI SVDB [sqlite_dpi_execute_query]: Executing query: SELECT * FROM test_tableC_PRIM SVDB [sqlite_prim_execute_query]: Executing query: SELECT * FROM test_table
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 3
-C_PRIM SVDB [sqlite_prim_execute_query]: | id | name | value |
-C_PRIM SVDB [sqlite_prim_execute_query]: |----|----|----|
-C_PRIM SVDB [sqlite_prim_execute_query]: | 1 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 2 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 3 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 4 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 5 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 6 | 'multi_row_test_1' | 10 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 7 | 'multi_row_test_2' | 20 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 8 | 'multi_row_test_3' | 30 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 9 | 'multi_row_test_1' | 10 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 10 | 'multi_row_test_2' | 20 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 11 | 'multi_row_test_3' | 30 |
-DPI SVDB [sqlite_dpi_insert_row]: Inserting row into table 'test_table'DPI SVDB [sqlite_dpi_insert_row]: Columns: name, valueDPI SVDB [sqlite_dpi_insert_row]: Values: 'test_name', 42C_PRIM SVDB [sqlite_prim_insert_row]: Inserting into table: test_table
-C_PRIM SVDB [sqlite_prim_insert_row]: Columns: name,  value
-C_PRIM SVDB [sqlite_prim_insert_row]: Values: 'test_name'  42 
-C_PRIM SVDB [sqlite_prim_insert_row]: Inserted row with ID: 12
-DPI SVDB [sqlite_dpi_execute_query]: Executing query: SELECT * FROM test_tableC_PRIM SVDB [sqlite_prim_execute_query]: Executing query: SELECT * FROM test_table
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 3
-C_PRIM SVDB [sqlite_prim_execute_query]: | id | name | value |
-C_PRIM SVDB [sqlite_prim_execute_query]: |----|----|----|
-C_PRIM SVDB [sqlite_prim_execute_query]: | 1 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 2 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 3 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 4 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 5 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 6 | 'multi_row_test_1' | 10 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 7 | 'multi_row_test_2' | 20 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 8 | 'multi_row_test_3' | 30 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 9 | 'multi_row_test_1' | 10 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 10 | 'multi_row_test_2' | 20 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 11 | 'multi_row_test_3' | 30 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 12 | 'test_name' | 42 |
-DPI SVDB [sqlite_dpi_get_row]: Getting row 12 from table 'test_table'C_PRIM SVDB [sqlite_prim_get_row]: Getting row 12 from table test_table
-C_PRIM SVDB [sqlite_prim_get_row]: Column id = 12
-C_PRIM SVDB [sqlite_prim_get_row]: Column name = 'test_name'
-C_PRIM SVDB [sqlite_prim_get_row]: Column value = 42
-DPI SVDB [sqlite_dpi_delete_row]: Deleting row 12 from table 'test_table'DPI SVDB [sqlite_dpi_commit_transaction]: Committing transactionC_PRIM SVDB [sqlite_prim_execute_query]: Executing query: COMMIT;
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 0
-C_PRIM SVDB [sqlite_prim_execute_query]: |
-DPI SVDB [sqlite_dpi_begin_transaction]: Beginning transactionC_PRIM SVDB [sqlite_prim_execute_query]: Executing query: BEGIN TRANSACTION;
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 0
-C_PRIM SVDB [sqlite_prim_execute_query]: |
-DPI SVDB [sqlite_dpi_execute_query]: Executing query: SELECT * FROM test_tableC_PRIM SVDB [sqlite_prim_execute_query]: Executing query: SELECT * FROM test_table
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 3
-C_PRIM SVDB [sqlite_prim_execute_query]: | id | name | value |
-C_PRIM SVDB [sqlite_prim_execute_query]: |----|----|----|
-C_PRIM SVDB [sqlite_prim_execute_query]: | 1 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 2 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 3 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 4 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 5 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 6 | 'multi_row_test_1' | 10 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 7 | 'multi_row_test_2' | 20 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 8 | 'multi_row_test_3' | 30 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 9 | 'multi_row_test_1' | 10 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 10 | 'multi_row_test_2' | 20 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 11 | 'multi_row_test_3' | 30 |
-DPI SVDB [sqlite_dpi_insert_row]: Inserting row into table 'test_table'DPI SVDB [sqlite_dpi_insert_row]: Columns: name, valueDPI SVDB [sqlite_dpi_insert_row]: Values: 'rollback_test', 100C_PRIM SVDB [sqlite_prim_insert_row]: Inserting into table: test_table
-C_PRIM SVDB [sqlite_prim_insert_row]: Columns: name,  value
-C_PRIM SVDB [sqlite_prim_insert_row]: Values: 'rollback_test'  100 
-C_PRIM SVDB [sqlite_prim_insert_row]: Inserted row with ID: 12
-DPI SVDB [sqlite_dpi_execute_query]: Executing query: SELECT * FROM test_tableC_PRIM SVDB [sqlite_prim_execute_query]: Executing query: SELECT * FROM test_table
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 3
-C_PRIM SVDB [sqlite_prim_execute_query]: | id | name | value |
-C_PRIM SVDB [sqlite_prim_execute_query]: |----|----|----|
-C_PRIM SVDB [sqlite_prim_execute_query]: | 1 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 2 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 3 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 4 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 5 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 6 | 'multi_row_test_1' | 10 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 7 | 'multi_row_test_2' | 20 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 8 | 'multi_row_test_3' | 30 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 9 | 'multi_row_test_1' | 10 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 10 | 'multi_row_test_2' | 20 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 11 | 'multi_row_test_3' | 30 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 12 | 'rollback_test' | 100 |
-DPI SVDB [sqlite_dpi_rollback_transaction]: Rolling back transactionC_PRIM SVDB [sqlite_prim_execute_query]: Executing query: ROLLBACK;
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 0
-C_PRIM SVDB [sqlite_prim_execute_query]: |
-DPI SVDB [sqlite_dpi_execute_query]: Executing query: SELECT * FROM test_tableC_PRIM SVDB [sqlite_prim_execute_query]: Executing query: SELECT * FROM test_table
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 3
-C_PRIM SVDB [sqlite_prim_execute_query]: | id | name | value |
-C_PRIM SVDB [sqlite_prim_execute_query]: |----|----|----|
-C_PRIM SVDB [sqlite_prim_execute_query]: | 1 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 2 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 3 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 4 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 5 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 6 | 'multi_row_test_1' | 10 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 7 | 'multi_row_test_2' | 20 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 8 | 'multi_row_test_3' | 30 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 9 | 'multi_row_test_1' | 10 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 10 | 'multi_row_test_2' | 20 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 11 | 'multi_row_test_3' | 30 |
-DPI SVDB [sqlite_dpi_vacuum_database]: Vacuuming databaseC_PRIM SVDB [sqlite_prim_execute_query]: Executing query: VACUUM;
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 0
-C_PRIM SVDB [sqlite_prim_execute_query]: |
-DPI SVDB [sqlite_dpi_execute_query]: Executing query: PRAGMA integrity_check;C_PRIM SVDB [sqlite_prim_execute_query]: Executing query: PRAGMA integrity_check;
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 1
-C_PRIM SVDB [sqlite_prim_execute_query]: | integrity_check |
-C_PRIM SVDB [sqlite_prim_execute_query]: |----|
-C_PRIM SVDB [sqlite_prim_execute_query]: | ok |
-DPI SVDB [sqlite_dpi_begin_transaction]: Beginning transactionC_PRIM SVDB [sqlite_prim_execute_query]: Executing query: BEGIN TRANSACTION;
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 0
-C_PRIM SVDB [sqlite_prim_execute_query]: |
-DPI SVDB [sqlite_dpi_insert_row]: Inserting row into table 'test_table'DPI SVDB [sqlite_dpi_insert_row]: Columns: name, valueDPI SVDB [sqlite_dpi_insert_row]: Values: 'multi_row_test_1', 10C_PRIM SVDB [sqlite_prim_insert_row]: Inserting into table: test_table
-C_PRIM SVDB [sqlite_prim_insert_row]: Columns: name,  value
-C_PRIM SVDB [sqlite_prim_insert_row]: Values: 'multi_row_test_1'  10 
-C_PRIM SVDB [sqlite_prim_insert_row]: Inserted row with ID: 12
-DPI SVDB [sqlite_dpi_insert_row]: Inserting row into table 'test_table'DPI SVDB [sqlite_dpi_insert_row]: Columns: name, valueDPI SVDB [sqlite_dpi_insert_row]: Values: 'multi_row_test_2', 20C_PRIM SVDB [sqlite_prim_insert_row]: Inserting into table: test_table
-C_PRIM SVDB [sqlite_prim_insert_row]: Columns: name,  value
-C_PRIM SVDB [sqlite_prim_insert_row]: Values: 'multi_row_test_2'  20 
-C_PRIM SVDB [sqlite_prim_insert_row]: Inserted row with ID: 13
-DPI SVDB [sqlite_dpi_insert_row]: Inserting row into table 'test_table'DPI SVDB [sqlite_dpi_insert_row]: Columns: name, valueDPI SVDB [sqlite_dpi_insert_row]: Values: 'multi_row_test_3', 30C_PRIM SVDB [sqlite_prim_insert_row]: Inserting into table: test_table
-C_PRIM SVDB [sqlite_prim_insert_row]: Columns: name,  value
-C_PRIM SVDB [sqlite_prim_insert_row]: Values: 'multi_row_test_3'  30 
-C_PRIM SVDB [sqlite_prim_insert_row]: Inserted row with ID: 14
-DPI SVDB [sqlite_dpi_commit_transaction]: Committing transactionC_PRIM SVDB [sqlite_prim_execute_query]: Executing query: COMMIT;
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 0
-C_PRIM SVDB [sqlite_prim_execute_query]: |
-DPI SVDB [sqlite_dpi_execute_query]: Executing query: SELECT * FROM test_tableC_PRIM SVDB [sqlite_prim_execute_query]: Executing query: SELECT * FROM test_table
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 3
-C_PRIM SVDB [sqlite_prim_execute_query]: | id | name | value |
-C_PRIM SVDB [sqlite_prim_execute_query]: |----|----|----|
-C_PRIM SVDB [sqlite_prim_execute_query]: | 1 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 2 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 3 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 4 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 5 | 'test_name' | 42 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 6 | 'multi_row_test_1' | 10 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 7 | 'multi_row_test_2' | 20 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 8 | 'multi_row_test_3' | 30 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 9 | 'multi_row_test_1' | 10 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 10 | 'multi_row_test_2' | 20 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 11 | 'multi_row_test_3' | 30 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 12 | 'multi_row_test_1' | 10 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 13 | 'multi_row_test_2' | 20 |
-C_PRIM SVDB [sqlite_prim_execute_query]: | 14 | 'multi_row_test_3' | 30 |
-DPI SVDB [sqlite_dpi_get_all_rows]: Getting all rows from table 'test_table'DPI SVDB [sqlite_dpi_begin_transaction]: Beginning transactionC_PRIM SVDB [sqlite_prim_execute_query]: Executing query: BEGIN TRANSACTION;
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 0
-C_PRIM SVDB [sqlite_prim_execute_query]: |
-DPI SVDB [sqlite_dpi_execute_query]: Executing query: DELETE FROM test_table WHERE name LIKE 'multi_row_test%'C_PRIM SVDB [sqlite_prim_execute_query]: Executing query: DELETE FROM test_table WHERE name LIKE 'multi_row_test%'
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 0
-C_PRIM SVDB [sqlite_prim_execute_query]: |
-DPI SVDB [sqlite_dpi_commit_transaction]: Committing transactionC_PRIM SVDB [sqlite_prim_execute_query]: Executing query: COMMIT;
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 0
-C_PRIM SVDB [sqlite_prim_execute_query]: |
-DPI SVDB [sqlite_dpi_create_table]: Creating table 'test_create_drop_table' with columns: id INTEGER PRIMARY KEY, name TEXT, value INTEGERC_PRIM SVDB [sqlite_prim_execute_query]: Executing query: CREATE TABLE IF NOT EXISTS test_create_drop_table (id INTEGER PRIMARY KEY, name TEXT, value INTEGER);
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 0
-C_PRIM SVDB [sqlite_prim_execute_query]: |
-DPI SVDB [sqlite_dpi_table_exists]: Checking if table 'test_create_drop_table' existsDPI SVDB [sqlite_dpi_insert_row]: Inserting row into table 'test_create_drop_table'DPI SVDB [sqlite_dpi_insert_row]: Columns: name, valueDPI SVDB [sqlite_dpi_insert_row]: Values: 'create_drop_test', 999C_PRIM SVDB [sqlite_prim_insert_row]: Inserting into table: test_create_drop_table
-C_PRIM SVDB [sqlite_prim_insert_row]: Columns: name,  value
-C_PRIM SVDB [sqlite_prim_insert_row]: Values: 'create_drop_test'  999 
-C_PRIM SVDB [sqlite_prim_insert_row]: Inserted row with ID: 1
-DPI SVDB [sqlite_dpi_execute_query]: Executing query: SELECT * FROM test_create_drop_tableC_PRIM SVDB [sqlite_prim_execute_query]: Executing query: SELECT * FROM test_create_drop_table
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 3
-C_PRIM SVDB [sqlite_prim_execute_query]: | id | name | value |
-C_PRIM SVDB [sqlite_prim_execute_query]: |----|----|----|
-C_PRIM SVDB [sqlite_prim_execute_query]: | 1 | 'create_drop_test' | 999 |
-DPI SVDB [sqlite_dpi_drop_table]: Dropping table 'test_create_drop_table'C_PRIM SVDB [sqlite_prim_execute_query]: Executing query: DROP TABLE IF EXISTS test_create_drop_table;
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 0
-C_PRIM SVDB [sqlite_prim_execute_query]: |
-DPI SVDB [sqlite_dpi_table_exists]: Checking if table 'test_create_drop_table' existsDPI SVDB [sqlite_dpi_create_index]: Creating index 'test_index' on table 'test_table', column 'name'C_PRIM SVDB [sqlite_prim_execute_query]: Executing query: CREATE INDEX IF NOT EXISTS test_index ON test_table(name);
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 0
-C_PRIM SVDB [sqlite_prim_execute_query]: |
-DPI SVDB [sqlite_dpi_execute_query]: Executing query: SELECT name FROM sqlite_master WHERE type='index' AND name='test_index'C_PRIM SVDB [sqlite_prim_execute_query]: Executing query: SELECT name FROM sqlite_master WHERE type='index' AND name='test_index'
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 1
-C_PRIM SVDB [sqlite_prim_execute_query]: | name |
-C_PRIM SVDB [sqlite_prim_execute_query]: |----|
-C_PRIM SVDB [sqlite_prim_execute_query]: | test_index |
-DPI SVDB [sqlite_dpi_execute_query]: Executing query: EXPLAIN QUERY PLAN SELECT * FROM test_table WHERE name = 'test_name'C_PRIM SVDB [sqlite_prim_execute_query]: Executing query: EXPLAIN QUERY PLAN SELECT * FROM test_table WHERE name = 'test_name'
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 4
-C_PRIM SVDB [sqlite_prim_execute_query]: | id | parent | notused | detail |
-C_PRIM SVDB [sqlite_prim_execute_query]: |----|----|----|----|
-C_PRIM SVDB [sqlite_prim_execute_query]: | 3 | 0 | 0 | SEARCH test_table USING INDEX test_index (name=?) |
-DPI SVDB [sqlite_dpi_drop_index]: Dropping index 'test_index'C_PRIM SVDB [sqlite_prim_execute_query]: Executing query: DROP INDEX IF EXISTS test_index;
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 0
-C_PRIM SVDB [sqlite_prim_execute_query]: |
-DPI SVDB [sqlite_dpi_execute_query]: Executing query: SELECT name FROM sqlite_master WHERE type='index' AND name='test_index'C_PRIM SVDB [sqlite_prim_execute_query]: Executing query: SELECT name FROM sqlite_master WHERE type='index' AND name='test_index'
-C_PRIM SVDB [sqlite_prim_execute_query]: Query result columns: 1
-C_PRIM SVDB [sqlite_prim_execute_query]: | name |
-C_PRIM SVDB [sqlite_prim_execute_query]: |----|
-DPI SVDB [sqlite_dpi_close_database]: Closing databaseC_PRIM SVDB [sqlite_prim_close_database]: Closing database
+
+
+ id | name | value |
+----|----|----|
+'test_name'  42 
+ id | name | value |
+----|----|----|
+ 1 | 'test_name' | 42 |
+
+
+ id | name | value |
+----|----|----|
+'rollback_test'  100 
+ id | name | value |
+----|----|----|
+ 1 | 'rollback_test' | 100 |
+
+ id | name | value |
+----|----|----|
+
+ integrity_check |
+----|
+ ok |
+
+'multi_row_test_1'  10 
+'multi_row_test_2'  20 
+'multi_row_test_3'  30 
+
+ id | name | value |
+----|----|----|
+ 1 | 'multi_row_test_1' | 10 |
+ 2 | 'multi_row_test_2' | 20 |
+ 3 | 'multi_row_test_3' | 30 |
+
+
+
+
+'create_drop_test'  999 
+ id | name | value |
+----|----|----|
+ 1 | 'create_drop_test' | 999 |
+
+
+ name |
+----|
+ test_index |
+ id | parent | notused | detail |
+----|----|----|----|
+ 3 | 0 | 0 | SEARCH test_table USING INDEX test_index (name=?) |
+
+ name |
+----|
 SQLite Tests: START
 PASS: Opened SQLite database 'test.db' for basic test
 PASS: Closed SQLite database 'test.db' after basic test
 PASS: Basic_sqlite_test @0
-PASS: Opened SQLite database 'test.db' with handle 96175998517048
+PASS: Opened SQLite database 'test.db' with handle 101121096711992
 PASS: Open SQLite DB test @0
 PASS: Created table 'test_table' with columns: id INTEGER PRIMARY KEY, name TEXT, value INTEGER
 PASS: Verified table 'test_table' exists
@@ -221,19 +73,19 @@ Table Details:
 PASS: Table Schema Operations test @0
 Initial table contents:
 PASS: Retrieved initial table contents
-PASS: Inserted row with ID 12 into table 'test_table'
+PASS: Inserted row with ID 1 into table 'test_table'
   Columns: name, value
   Values: 'test_name', 42
 
 Table contents after insert:
 PASS: Retrieved table contents after insert
-PASS: Retrieved row 12 from table 'test_table'
-PASS: Deleted row 12 from table 'test_table'
+PASS: Retrieved row 1 from table 'test_table'
+PASS: Deleted row 1 from table 'test_table'
 PASS: Successfully committed transaction
 PASS: Table Row Operations test @0
 Initial table contents before rollback test:
 PASS: Retrieved initial table contents
-PASS: Inserted temporary row with ID 12 into table 'test_table'
+PASS: Inserted temporary row with ID 1 into table 'test_table'
 
 Table contents after insert but before rollback:
 PASS: Retrieved table contents after insert
@@ -250,7 +102,7 @@ PASS: Database Vacuum test @0
 Testing get_all_rows functionality on 'test_table'
 Table contents before get_all_rows test:
 PASS: Successfully retrieved all rows from table 'test_table'
-      Retrieved 14 rows with 3 columns each
+      Retrieved 3 rows with 3 columns each
 PASS: Multi-Row Operations test @0
 Testing explicit table creation for 'test_create_drop_table'
 PASS: Created table 'test_create_drop_table' with columns: id INTEGER PRIMARY KEY, name TEXT, value INTEGER
@@ -272,7 +124,7 @@ PASS: Dropped index 'test_index'
 Verifying index no longer exists:
 PASS: Verified index 'test_index' no longer exists
 PASS: Index Operations test @0
-PASS: Closed SQLite database with handle 96175998517048
+PASS: Closed SQLite database with handle 101121096711992
 PASS: Close SQLite DB test @0
 OVERALL TEST RESULT: PASS @0
 Tests Passed: 10, Tests Failed: 0, Total: 10

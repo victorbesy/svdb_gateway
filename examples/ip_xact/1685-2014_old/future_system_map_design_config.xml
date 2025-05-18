@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipxact:designConfiguration
+  xmlns:ipxact="http://www.accellera.org/XMLSchema/IPXACT/1685-2014"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.accellera.org/XMLSchema/IPXACT/1685-2014 designConfig.xsd">
+  <ipxact:vendor>example.vendor</ipxact:vendor>
+  <ipxact:library>example_lib</ipxact:library>
+  <ipxact:name>future_system_map_design_config</ipxact:name>
+  <ipxact:version>1.0</ipxact:version>
+  <ipxact:designRef vendor="example.vendor" library="example_lib" name="future_system_map" version="1.0"/>
+  <ipxact:componentInstances>
+    <ipxact:componentInstance instanceName="BlockA_1">
+      <ipxact:memoryMapRef memoryMapRef="BlockA_map"/>
+      <ipxact:addressSpaceRef addressSpaceRef="system_bus"/>
+      <ipxact:baseAddress>0x0000</ipxact:baseAddress>
+    </ipxact:componentInstance>
+    <ipxact:componentInstance instanceName="BlockA_2">
+      <ipxact:memoryMapRef memoryMapRef="BlockA_map"/>
+      <ipxact:addressSpaceRef addressSpaceRef="system_bus"/>
+      <ipxact:baseAddress>0x1000</ipxact:baseAddress>
+    </ipxact:componentInstance>
+    <ipxact:componentInstance instanceName="BlockB_1">
+      <ipxact:memoryMapRef memoryMapRef="BlockB_map"/>
+      <ipxact:addressSpaceRef addressSpaceRef="system_bus"/>
+      <ipxact:baseAddress>0x2000</ipxact:baseAddress>
+    </ipxact:componentInstance>
+    <ipxact:componentInstance instanceName="BlockC_1">
+      <!-- BlockC doesn't have its own registers but acts as a container -->
+      <ipxact:addressSpaceRef addressSpaceRef="system_bus"/>
+      <ipxact:baseAddress>0x3000</ipxact:baseAddress>
+    </ipxact:componentInstance>
+    <ipxact:componentInstance instanceName="BlockA_in_C">
+      <ipxact:memoryMapRef memoryMapRef="BlockA_map"/>
+      <ipxact:addressSpaceRef addressSpaceRef="system_bus"/>
+      <ipxact:baseAddress>0x4000</ipxact:baseAddress>
+    </ipxact:componentInstance>
+  </ipxact:componentInstances>
+  <ipxact:description>Configuration for the future_system_map design, defining base addresses for all blocks in the system.</ipxact:description>
+</ipxact:designConfiguration>

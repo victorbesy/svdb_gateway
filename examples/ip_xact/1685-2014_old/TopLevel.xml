@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipxact:component
+  xmlns:ipxact="http://www.accellera.org/XMLSchema/IPXACT/1685-2014"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.accellera.org/XMLSchema/IPXACT/1685-2014 component.xsd">
+  <ipxact:vendor>example.vendor</ipxact:vendor>
+  <ipxact:library>example_lib</ipxact:library>
+  <ipxact:name>TopLevel</ipxact:name>
+  <ipxact:version>1.0</ipxact:version>
+  <ipxact:busInterfaces>
+    <ipxact:busInterface>
+      <ipxact:name>system_bus_interface</ipxact:name>
+      <ipxact:busType vendor="example.vendor" library="example_lib" name="register_bus" version="1.0"/>
+      <ipxact:master/>
+    </ipxact:busInterface>
+  </ipxact:busInterfaces>
+  <ipxact:addressSpaces>
+    <ipxact:addressSpace>
+      <ipxact:name>system_bus</ipxact:name>
+      <ipxact:range>0x10000</ipxact:range>
+      <ipxact:width>32</ipxact:width>
+      <ipxact:addressUnitBits>8</ipxact:addressUnitBits>
+    </ipxact:addressSpace>
+  </ipxact:addressSpaces>
+  <ipxact:description>Top level component that defines the system bus address space</ipxact:description>
+</ipxact:component>

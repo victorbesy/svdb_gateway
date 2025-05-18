@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipxact:component
+  xmlns:ipxact="http://www.accellera.org/XMLSchema/IPXACT/1685-2014"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.accellera.org/XMLSchema/IPXACT/1685-2014 component.xsd">
+  <ipxact:vendor>example.vendor</ipxact:vendor>
+  <ipxact:library>example_lib</ipxact:library>
+  <ipxact:name>BlockC</ipxact:name>
+  <ipxact:version>1.0</ipxact:version>
+  <ipxact:busInterfaces>
+    <ipxact:busInterface>
+      <ipxact:name>internal_bus</ipxact:name>
+      <ipxact:busType vendor="example.vendor" library="example_lib" name="register_bus" version="1.0"/>
+      <ipxact:master/>
+    </ipxact:busInterface>
+  </ipxact:busInterfaces>
+  <ipxact:description>Composite block placeholder. Hierarchy is defined in the design file, not here.</ipxact:description>
+</ipxact:component>
